@@ -16,15 +16,16 @@ function sleep(ms) {
 
 async function miMiddleware(req,res,next){
     //go to login page
+    console.log(browser);
     page = await browser.newPage();
     await page.goto('https://registro.unah.edu.hn/pregra_estu_login.aspx');
-    await sleep(4 * 1000);
+    //await sleep(4 * 1000);
     next();
 }
 
 app.get('/login/:clave/:valor', miMiddleware, async function(req,res){
    /* Se ejecutará esta función luego del middleware */
-   await sleep(6 * 1000);
+   //await sleep(6 * 1000);
    res.send("init IS-manager")
 });
 
