@@ -15,6 +15,15 @@ function sleep(ms) {
 }
 
 async function miMiddleware(req,res,next){
+    if (browser === null) {
+        browser = await chrome.puppeteer.launch({
+            args: [...chrome.args, "--hide-scrollbars", "--disable-web-security"],
+            defaultViewport: chrome.defaultViewport,
+            executablePath: await chrome.executablePath,
+            headless: true,
+            ignoreHTTPSErrors: true,
+        });
+    }
     //go to login page
     console.log(browser);
     page = await browser.newPage();
