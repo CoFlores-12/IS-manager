@@ -6,6 +6,7 @@ const db = require('./routes/db')
 
 require('dotenv').config()
 
+app.use(express.static('public'))
 
 app.use('/register', register);
 app.use('/db', db);

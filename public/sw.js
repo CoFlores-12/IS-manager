@@ -1,5 +1,7 @@
 const assets = [
     "/",
+    "https://code.jquery.com/jquery-3.6.3.min.js",
+    "https://kit.fontawesome.com/1e8824e8c2.js"
 ];
 
 self.addEventListener("install", installEvent => {
