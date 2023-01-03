@@ -1,5 +1,8 @@
 (async ()=>{
-
+  $('.name').text(data.INFO.Nombre)
+  $('.career').text(data.INFO.Carrera)
+  $('#globalP').text(data.INFO.Indice.global + '%')
+  $('#periodP').text(data.INFO.Indice.periodo + '%')
 })();
 
 const ctx = document.getElementById('myChart');

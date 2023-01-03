@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>
+    data=[];
+    if (localStorage.getItem('data') === undefined) {
+      window.location.href = '/';
+    }
+    data=JSON.parse(localStorage.getItem('data'));
+  </script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
@@ -25,18 +32,18 @@
         <div class="infoStudent">
             <span class="name"></span><br>
             <span class="career"></span>
-            <div class="chart" style="position: relative; height:20vh; width:100%">
+            <div class="chart" style="position: relative; height:20vh; width:100%; margin-top: 20px;">
                 <canvas id="myChart"></canvas>
             </div>
         </div>
         <div class="av">
             <div class="global">
                 <span>Global</span>
-                <span>0%</span>
+                <span id="globalP">0%</span>
             </div>
             <div class="periodo">
                 <span>Period</span>
-                <span>0%</span>
+                <span id="periodP">0%</span>
             </div>
         </div>
     </div>
@@ -82,6 +89,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
-    <script src="js/index.js"></script>
+    <script src="js/home.js"></script>
 </body>
 </html>

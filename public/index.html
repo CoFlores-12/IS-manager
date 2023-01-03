@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script>
+        if(window.location.hostname == '127.0.0.1')
+        {window.location.href = 'http://localhost:'+window.location.port+'/'}
+    </script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -108,9 +112,38 @@
             color: #1B58BB;
 
         }
+        .modal{
+            visibility:hidden;
+            z-index: 9;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background-color: rgba(0, 0, 0, 0.322);
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .card{
+            background-color: #fff;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
     </style>
+
 </head>
 <body>
+    <div class="modal">
+        <div class="card">
+            <img src="Spinner-1s-200px.svg" alt="" width="80%">
+            <h3>please wait</h3>
+        </div>
+    </div>
     <div class="header">
         <h1>Login</h1>
     </div>
@@ -119,20 +152,40 @@
         <span>Enter your account number and registration key dipp UNAH</span>
         <div class="form">
             <div class="inputGroup">
-                <input type="text" required autocomplete="off">
+                <input id="numberInput" type="text" required>
                 <label for="name">account number</label>
             </div>
             <div class="inputGroup">
-                <input type="password" required autocomplete="off">
+                <input id="passInput" type="password" required >
                 <label for="name">key</label>
             </div>
-            <button type="submit">Login</button>
-            <span class="notRegister">continue without register UNAH</span>
+            <p id="infoLog" style="color:red; visibility:hidden"></p>
+            <button onclick="login()" type="submit">Login</button>
+            <span onclick="loginwithout()" class="notRegister">continue without register UNAH</span>
         </div>
     </main>
 
     <script>
-        
+        function login() {
+            $('.modal').css('visibility','visible');
+            $.post(`/register/${$('#numberInput').val()}/${$('#passInput').val()}`, {})
+            .done(function (response) {
+                $('.modal').css('visibility','hidden');
+                localStorage.setItem('data', JSON.stringify(response));
+                
+                window.location.href = '/home.html';
+            }).fail(function(xhr, status, res) {
+                $('.modal').css('visibility','hidden');
+                $('#infoLog').css('visibility','visible');
+                $('#infoLog').text(xhr.responseText);
+            })
+
+        }
+
+        function loginwithout() {
+            localStorage.setItem('data', JSON.stringify({"class":[],"INFO":{"Indice":{"global":"0","periodo":"0"},"Nombre":"USER 01","Carrera":"INGENIERIA EN SISTEMAS"}}));
+            window.location.href = '/home.html';
+        }
     </script>
 </body>
 </html>

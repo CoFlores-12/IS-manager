@@ -32,8 +32,12 @@ async function login(req,res,next){
   await page.click('#MainContent_Button1');
 
   //go to history
-  await page.waitForSelector('#MainContent_LinkButton2');
-  await next();
+  try {
+    await page.waitForSelector('#MainContent_LinkButton2');
+    await next();
+  } catch (error) {
+    res.status(500).send("Invalid Credentials");
+  }
 }
 
 async function pageNumber(req,res,next){
@@ -52,52 +56,62 @@ async function pageNumber(req,res,next){
   await next();
 }
 
-app.get('/:cuenta/:clave', openRegister, login, pageNumber, async function (req, res) {
+app.post('/:cuenta/:clave', openRegister, login, pageNumber, async function (req, res) {
   
   //JSON response
-  const classRes = [];
+  const classRes = {
+    "class": [],
+    "INFO": {}
+  };
 
   for (let i = 0; i < pages; i++) {
-    const classRestmp = await page.evaluate(() => { 
+    classRes.class.push(await page.evaluate(() => { 
       const  clases = [];
       //get all elements of class table
       const elements = document.querySelectorAll('#MainContent_ASPxPageControl1_ASPxGridView2_DXMainTable tbody tr');
 
       for (let index = 9; index<elements.length; index++){
-          const obj = {
-              'classname': elements[index].getElementsByTagName('td')[1].innerHTML,
-              'nota': elements[index].getElementsByTagName('td')[6].innerHTML
-          };
-          clases.push(obj);
+        clases.push({
+            'CODIGO': elements[index].getElementsByTagName('td')[0].innerHTML,
+            'ASIGNATURA': elements[index].getElementsByTagName('td')[1].innerHTML,
+            'UV': elements[index].getElementsByTagName('td')[2].innerHTML,
+            'SECCION': elements[index].getElementsByTagName('td')[3].innerHTML,
+            'ANIO': elements[index].getElementsByTagName('td')[4].innerHTML,
+            'PERIODO': elements[index].getElementsByTagName('td')[5].innerHTML,
+            'CALIFICACION': elements[index].getElementsByTagName('td')[6].innerHTML,
+            'OBS': elements[index].getElementsByTagName('td')[7].innerHTML
+          });
       }
       return clases;
-    });
+    }));
 
-    for (const cl of classRestmp) {
-      classRes.push(cl);
-    }
+  //next page in history
+  await page.evaluate(() => {
+    aspxGVPagerOnClick("MainContent_ASPxPageControl1_ASPxGridView2","PBN");
+  });
 
-    //next page in history
-    await page.evaluate(() => {
-      aspxGVPagerOnClick("MainContent_ASPxPageControl1_ASPxGridView2","PBN");
-    });
+  await page.waitForTimeout(900);
+}
 
-    await page.waitForTimeout(900);
-  }
 
   //get averanges
   const promedio = await page.evaluate(() => {
     const obj = {
-      'Average Global': document.getElementById('MainContent_ASPxRoundPanel2_ASPxLabel11').innerHTML,
-      'Average Period': document.getElementById('MainContent_ASPxRoundPanel2_ASPxLabel12').innerHTML
+        "Indice": {
+            'global': document.getElementById('MainContent_ASPxRoundPanel2_ASPxLabel11').innerHTML,
+            'periodo': document.getElementById('MainContent_ASPxRoundPanel2_ASPxLabel12').innerHTML
+        },
+        "Nombre": document.getElementById('MainContent_ASPxRoundPanel2_ASPxLabel8').innerHTML,
+        "Carrera": document.getElementById('MainContent_ASPxRoundPanel2_ASPxLabel9').innerHTML
     };
     return obj;
   });
-  classRes.push(promedio);
+  classRes.INFO=promedio;
 
   await page.close();
   page = null;
-  
+  req.session.number = req.params.cuenta;
+  req.session.key = req.params.clave;
   res.send(classRes);
   
 });
