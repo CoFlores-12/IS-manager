@@ -1,0 +1,30 @@
+*{
+    margin: 0;
+    box-sizing: border-box;
+}
+html, body {
+    user-select: none;
+    height: 100%;
+    width: 100%;
+    background-color: #fafaff;
+    color: #424165;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+.row {
+    display: flex;
+    flex-direction: row;
+}
+.colum {
+    display: flex;
+    flex-direction: column;
+}
+.center-y{
+    align-items: center;
+}
+.center-x {
+    justify-content: center;
+}
+.center-xy {
+    justify-content: center;
+    align-items: center;
+}

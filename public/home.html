@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
+    <title>Home</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/animate.min.css">
+    <link rel="stylesheet" href="css/index.css">
+    <script src="fontAwesome/js/all.js"></script>
+
+    <link rel="manifest" href="manifest.json"/>
+    <link rel="apple-touch-icon" href="logo.png" />
+    <meta name="apple-mobile-web-app-status-bar" content="#fafaff" />
+    <meta name="theme-color" content="#fafaff"/>
+    <link rel="shortcut icon" href="logo.png"" type="image/x-icon">
+</head>
+<body>
+
+    <div id="main">
+      <div class="header" style="padding: 0 16px;">
+        <h1>Study Process</h1>
+        <div class="infoStudent">
+            <span class="name"></span><br>
+            <span class="career"></span>
+            <div class="chart" style="position: relative; height:20vh; width:100%">
+                <canvas id="myChart"></canvas>
+            </div>
+        </div>
+        <div class="av">
+            <div class="global">
+                <span>Global</span>
+                <span>0%</span>
+            </div>
+            <div class="periodo">
+                <span>Period</span>
+                <span>0%</span>
+            </div>
+        </div>
+    </div>
+    <main>
+        <div onclick="viewHistory('history')" class="opt"><span>See history</span><i class="fa-solid fa-chevron-right"></i></div>
+        <hr>
+        <div onclick="viewHistory('available')" class="opt"><span>See classes available</span><i class="fa-solid fa-chevron-right"></i></div>
+        <hr>
+        <div onclick="viewHistory('remaining')" class="opt"><span>see classes remaining</span><i class="fa-solid fa-chevron-right"></i></div>
+        <hr>
+        <div onclick="viewHistory('all')" class="opt"><span>see all classes</span><i class="fa-solid fa-chevron-right"></i></div>
+    </main>
+
+    </div>
+    <div id="history">
+      <div class="header row center-y" style="padding: 8px 16px; justify-content: space-between;">
+        <span onclick="back('history')" class="back"><i class="fa-solid fa-chevron-left"></i> Back</span>
+        <span class="title">History</span>
+        <span style="visibility: hidden;"><i class="fa-solid fa-chevron-left"></i> Back</span>
+      </div>
+    </div>
+    <div id="available">
+      <div class="header row center-y" style="padding: 8px 16px; justify-content: space-between;">
+        <span onclick="back('available')" class="back"><i class="fa-solid fa-chevron-left"></i> Back</span>
+        <span class="title">Availables</span>
+        <span style="visibility: hidden;"><i class="fa-solid fa-chevron-left"></i> Back</span>
+      </div>
+    </div>
+    <div id="remaining">
+      <div class="header row center-y" style="padding: 8px 16px; justify-content: space-between;">
+        <span onclick="back('remaining')" class="back"><i class="fa-solid fa-chevron-left"></i> Back</span>
+        <span class="title">Remaining</span>
+        <span style="visibility: hidden;"><i class="fa-solid fa-chevron-left"></i> Back</span>
+      </div>
+    </div>
+    <div id="all">
+      <div class="header row center-y" style="padding: 8px 16px; justify-content: space-between;">
+        <span onclick="back('all')" class="back"><i class="fa-solid fa-chevron-left"></i> Back</span>
+        <span class="title">All</span>
+        <span style="visibility: hidden;"><i class="fa-solid fa-chevron-left"></i> Back</span>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/jquery.js"></script>
+    <script src="js/index.js"></script>
+</body>
+</html>

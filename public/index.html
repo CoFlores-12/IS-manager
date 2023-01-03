@@ -4,9 +4,136 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Login</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans&display=swap" rel="stylesheet">
+    <script src="fontAwesome/js/all.js"></script>
+    <script src="js/jquery.js"></script>
+    <link rel="apple-touch-icon" href="logo.png" />
+    <meta name="apple-mobile-web-app-status-bar" content="#1B58BB" />
+    <meta name="theme-color" content="#1B58BB"/>
+    <link rel="shortcut icon" href="logo.png"" type="image/x-icon">
+    <style>
+        *{
+            margin: 0;
+            box-sizing: border-box;
+        }
+        html, body {
+            user-select: none;
+            height: 100%;
+            width: 100%;
+            background-color: #1B58BB;
+            color: #424165;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            display: flex;
+            flex-direction: column;
+        }
+        .header {
+            padding: 10vh 16px;
+            color: #fff;
+            flex: 1;
+        }
+        main{
+            border-radius: 16px 16px 0px 0px;
+            background-color: #fff;
+            height: 100%;
+            width: 100%;
+            flex: 10;
+            padding: 32px;
+            display: flex;
+            flex-direction: column;
+        }
+        h3{
+            font-weight: bold;
+        }
+        span{
+            font-size: 0.7rem;
+        }
+        .form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+        button{
+            background-color: #1B58BB;
+            color: #fff;
+            border-radius: 10px;
+            border: none;
+            outline: none;
+            padding: 10px;
+            max-width: 190px;
+            margin-top: 16px;
+            width: 100%;
+        }
+        .inputGroup {
+        font-family: 'Segoe UI', sans-serif;
+        margin: 1em 0 0 0;
+        max-width: 190px;
+        position: relative;
+        }
+
+        .inputGroup input {
+        font-size: 100%;
+        padding: 0.8em;
+        outline: none;
+        border: 2px solid rgb(200, 200, 200);
+        background-color: transparent;
+        border-radius: 20px;
+        width: 100%;
+        }
+
+        .inputGroup label {
+        font-size: 100%;
+        position: absolute;
+        left: 0;
+        padding: 0.8em;
+        margin-left: 0.5em;
+        pointer-events: none;
+        transition: all 0.3s ease;
+        color: rgb(100, 100, 100);
+        }
+
+        .inputGroup :is(input:focus, input:valid)~label {
+        transform: translateY(-50%) scale(.9);
+        margin: 0em;
+        margin-left: 1.3em;
+        padding: 0.4em;
+        background-color: #ffffff;
+        }
+
+        .inputGroup :is(input:focus, input:valid) {
+        border-color: #1B58BB;
+        }
+        .notRegister{
+            margin-top: 15px;
+            color: #1B58BB;
+
+        }
+    </style>
 </head>
 <body>
-    <h1>Test 02</h1>
+    <div class="header">
+        <h1>Login</h1>
+    </div>
+    <main>
+        <h3>Welcome</h3>
+        <span>Enter your account number and registration key dipp UNAH</span>
+        <div class="form">
+            <div class="inputGroup">
+                <input type="text" required autocomplete="off">
+                <label for="name">account number</label>
+            </div>
+            <div class="inputGroup">
+                <input type="password" required autocomplete="off">
+                <label for="name">key</label>
+            </div>
+            <button type="submit">Login</button>
+            <span class="notRegister">continue without register UNAH</span>
+        </div>
+    </main>
+
+    <script>
+        
+    </script>
 </body>
 </html>
