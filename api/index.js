@@ -133,6 +133,10 @@ app.post('/register/:cuenta/:clave', openRegister, login, pageNumber, async func
     
 app.use('/db', db);
 
+app.get('/test', (req, res) => {
+  res.send('Done!')
+});
+
 app.listen(process.env.NODE_PORT, async () => {
     browser = await chrome.puppeteer.launch({
         args: [...chrome.args, "--hide-scrollbars", "--disable-web-security"],
