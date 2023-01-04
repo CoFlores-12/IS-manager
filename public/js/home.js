@@ -8,7 +8,7 @@ available=[];
   $('#periodP').text(data.INFO.Indice.periodo + '%')
 
   if (localStorage.getItem('career') === null) {
-    await $.post(`/db/${data.INFO.Carrera}`, {})
+    await $.post(`/api/db/${data.INFO.Carrera}`, {})
       .done(function (response) {
         localStorage.setItem('career', JSON.stringify(response))
       }).fail(function(xhr, status, res) {

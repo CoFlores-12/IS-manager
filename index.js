@@ -69,7 +69,7 @@ async function pageNumber(req,res,next){
     await next();
 }
 
-app.post('/register/:cuenta/:clave', openRegister, login, pageNumber, async function (req, res) {
+app.post('/api/register/:cuenta/:clave', openRegister, login, pageNumber, async function (req, res) {
   
     //JSON response
     const classRes = {
@@ -131,7 +131,7 @@ app.post('/register/:cuenta/:clave', openRegister, login, pageNumber, async func
     
 });
     
-app.use('/db', db);
+app.use('/api/db', db);
 
 app.get('/api/test', (req, res) => {
   res.send('Done!')
