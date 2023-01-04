@@ -133,7 +133,7 @@ app.post('/register/:cuenta/:clave', openRegister, login, pageNumber, async func
     
 app.use('/db', db);
 
-app.get('/test', (req, res) => {
+app.get('/api/test', (req, res) => {
   res.send('Done!')
 });
 
