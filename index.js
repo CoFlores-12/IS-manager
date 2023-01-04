@@ -74,12 +74,12 @@ app.post('/register/:cuenta/:clave', openRegister, login, pageNumber, async func
   
     //JSON response
     const classRes = {
-      "class": [],
+      "classes": [],
       "INFO": {}
     };
   
     for (let i = 0; i < pages; i++) {
-      classRes.class.push(await page.evaluate(() => { 
+      responseClass = await page.evaluate(() => { 
         const  clases = [];
         //get all elements of class table
         const elements = document.querySelectorAll('#MainContent_ASPxPageControl1_ASPxGridView2_DXMainTable tbody tr');
@@ -97,8 +97,10 @@ app.post('/register/:cuenta/:clave', openRegister, login, pageNumber, async func
             });
         }
         return clases;
-      }));
-  
+      });
+      responseClass.forEach(clas => {
+        classRes.classes.push(clas);
+      });
     //next page in history
     await page.evaluate(() => {
       aspxGVPagerOnClick("MainContent_ASPxPageControl1_ASPxGridView2","PBN");

@@ -4,10 +4,10 @@ const schema = new mongoose.Schema({
     name: String,
     classes: [
         {
-            "cod": String,
-            "name": String,
+            "codigo": String,
+            "nombre": String,
             "uv": Number,
-            "req": {
+            "requisitos": {
                 "1": String,
                 "2": String,
                 "3": String,
