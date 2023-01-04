@@ -3,18 +3,18 @@ const app = express();
 const database = require('./modules/database');
 const chrome = require('chrome-aws-lambda');
 const db = require('./routes/db')
-//const cookieParser = require("cookie-parser");
-//const sessions = require('express-session');
+const cookieParser = require("cookie-parser");
+const sessions = require('express-session');
 
 require('dotenv').config()
-//app.use(sessions({
- //   secret: process.env.secret,
- //   saveUninitialized:true,
-  //  resave: true
-//}));
-//app.use(express.json());
-//app.use(express.urlencoded({ extended: true }));
-//app.use(cookieParser());
+app.use(sessions({
+    secret: process.env.secret,
+    saveUninitialized:true,
+    resave: true
+}));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 app.use('/',express.static(__dirname + '/public'))
 
@@ -124,8 +124,8 @@ app.post('/register/:cuenta/:clave', openRegister, login, pageNumber, async func
   
     await page.close();
     page = null;
-    //req.session.number = req.params.cuenta;
-    //req.session.key = req.params.clave;
+    req.session.number = req.params.cuenta;
+    req.session.key = req.params.clave;
     res.send(classRes);
     
 });
