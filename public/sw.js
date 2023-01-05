@@ -2,14 +2,13 @@ const assets = [
     "/",
     "https://code.jquery.com/jquery-3.6.3.min.js",
     "https://kit.fontawesome.com/1e8824e8c2.js",
-    "index.html",
-    "home.html",
-    "js/home.js",
-    "css/css/index.css",
-    "css/css/style.css",
-    "css/animate.min.css",
-    "logo.png",
-    "Spinner-1s-200px.svg"
+    "/index.html",
+    "/js/home.js",
+    "/css/css/index.css",
+    "/css/css/style.css",
+    "/css/animate.min.css",
+    "/logo.png",
+    "/Spinner-1s-200px.svg"
 ];
 
 self.addEventListener("install", installEvent => {

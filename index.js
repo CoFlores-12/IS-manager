@@ -137,6 +137,8 @@ app.get('/api/test', (req, res) => {
   res.send('Done!')
 });
 
+app.use('/', express.static('public'))
+
 app.listen(process.env.NODE_PORT, async () => {
     browser = await chrome.puppeteer.launch({
         args: [...chrome.args, "--hide-scrollbars", "--disable-web-security"],

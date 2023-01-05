@@ -7,6 +7,11 @@
     font-size: 0.95rem;
 }
 
+.header {
+    padding: 8px 4px; 
+    justify-content: space-between;
+}
+
 .career {
     font-weight: bold;
 }
@@ -107,4 +112,12 @@ table td {
 }
 tr {
     border-bottom: 1px solid rgba(0, 0, 0, 0.247);
+}
+select {
+    border: 1px solid rgba(0, 0, 0, 0.226);
+    padding: 4px 8px;
+    border-radius: 16px;
+}
+select:focus{
+    border: 1px solid rgba(17, 98, 173, 0.562);
 }

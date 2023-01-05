@@ -52,24 +52,35 @@
         <hr>
         <div onclick="viewAvalibles('available')" class="opt"><span>See classes available</span><i class="fa-solid fa-chevron-right"></i></div>
         <hr>
-        <div onclick="viewHistory('remaining')" class="opt"><span>see classes remaining</span><i class="fa-solid fa-chevron-right"></i></div>
+        <div onclick="viewRemaining('remaining')" class="opt"><span>see classes remaining</span><i class="fa-solid fa-chevron-right"></i></div>
         <hr>
         <div onclick="viewHAll('all')" class="opt"><span>see all classes</span><i class="fa-solid fa-chevron-right"></i></div>
         <hr>
         <div onclick="viewPlan('plan')" class="opt"><span>see study plan</span><i class="fa-solid fa-chevron-right"></i></div>
-        <div  class="opt"><span><a href="index.html">logout</a></span><i class="fa-solid fa-chevron-right"></i></div>
     </main>
 
     </div>
     <div id="history">
-      <div class="header row center-y" style="padding: 8px 16px; justify-content: space-between;">
+      <div class="header row center-y" >
         <span onclick="back('history')" class="back"><i class="fa-solid fa-chevron-left"></i> Back</span>
         <span class="title">History</span>
         <span style="visibility: hidden;"><i class="fa-solid fa-chevron-left"></i> Back</span>
       </div>
+      <div class="bodyHistory">
+        <select name="graph" id="graph">
+          <option value="myChartHistoryG">Global</option>
+          <option value="myChartHistoryAP">Annual period</option>
+          <option value="myChartHistoryCL">Classes</option>
+        </select>
+        <div class="chart" style="position: relative; height:30vh; width:100%; margin-top: 20px;">
+          <canvas  id="myChartHistoryG"></canvas>
+          <canvas style="display: none;" id="myChartHistoryAP"></canvas>
+          <canvas style="display: none;" id="myChartHistoryCL"></canvas>
+        </div>
+      </div>
     </div>
     <div id="available">
-      <div class="header row center-y" style="padding: 8px 16px; justify-content: space-between;">
+      <div class="header row center-y" >
         <span onclick="back('available')" class="back"><i class="fa-solid fa-chevron-left"></i> Back</span>
         <span class="title">Availables</span>
         <span style="visibility: hidden;"><i class="fa-solid fa-chevron-left"></i> Back</span>
@@ -88,14 +99,26 @@
       </table>
     </div>
     <div id="remaining">
-      <div class="header row center-y" style="padding: 8px 16px; justify-content: space-between;">
+      <div class="header row center-y" >
         <span onclick="back('remaining')" class="back"><i class="fa-solid fa-chevron-left"></i> Back</span>
         <span class="title">Remaining</span>
         <span style="visibility: hidden;"><i class="fa-solid fa-chevron-left"></i> Back</span>
       </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Code</th>
+            <th>Name</th>
+            <th>UV</th>
+            <th>Requirements</th>
+          </tr>
+        </thead>
+        <tbody id="bodyRemainingClassesTable">
+        </tbody>
+      </table>
     </div>
     <div id="all">
-      <div class="header row center-y" style="padding: 8px 16px; justify-content: space-between;">
+      <div class="header row center-y">
         <span onclick="back('all')" class="back"><i class="fa-solid fa-chevron-left"></i> Back</span>
         <span class="title">All</span>
         <span style="visibility: hidden;"><i class="fa-solid fa-chevron-left"></i> Back</span>
@@ -114,7 +137,7 @@
       </table>
     </div>
     <div id="plan">
-      <div class="header row center-y" style="padding: 8px 16px; justify-content: space-between;">
+      <div class="header row center-y">
         <span onclick="back('plan')" class="back"><i class="fa-solid fa-chevron-left"></i> Back</span>
         <span class="title">study plan</span>
         <span style="visibility: hidden;"><i class="fa-solid fa-chevron-left"></i> Back</span>
