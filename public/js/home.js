@@ -5,6 +5,7 @@ viewActive='';
 graph1 = null;
 graph2 = null;
 graph3 = null;
+functions = true;
 
 //install SW
 if ("serviceWorker" in navigator) {
@@ -23,13 +24,14 @@ if ("serviceWorker" in navigator) {
   $('#periodP').text(data.INFO.Indice.periodo + '%')
 
   if (localStorage.getItem('career') === null) {
-    await $.post(`/api/db/${data.INFO.Carrera}`, {})
+    $.post(`/api/db/${data.INFO.Carrera}`, {})
       .done(function (response) {
         localStorage.setItem('career', JSON.stringify(response))
       }).fail(function(xhr, status, res) {
+        functions = false;
         
       })
-  }
+    }
   init()
   $('#graph').on('change', function() {
     loadGraph();
@@ -42,6 +44,10 @@ if ("serviceWorker" in navigator) {
 })();
 
 function init() {
+  if (!functions) {
+    $('.chart').css('height', '0px')
+    return;
+  }
   career = JSON.parse(localStorage.getItem('career'));
   all = career.classes;
 
@@ -186,12 +192,16 @@ function viewHistory(nameScreen) {
         <td>${element.CODIGO.trim()}</td>
         <td>${element.ASIGNATURA}</td>
         <td>${element.UV}</td>
-        <td>${element.CALIFICACION}</td>
+        <td>${element.CALIFICACION}%</td>
       </tr>`)
   });
 }
 function viewHAll(nameScreen) {
   viewScreen(nameScreen)
+  if (!functions) {
+    $('.bdAl').html('<center><h4>not available for this career</h4></center>')
+    return;
+  }
   counterOT = 0;
   $('#bodyAllClassesTable').html('')
   career.classes.forEach(element => {
@@ -241,6 +251,10 @@ function viewHAll(nameScreen) {
 }
 function viewRemaining(nameScreen) {
   viewScreen(nameScreen)
+  if (!functions) {
+    $('.bdR').html('<center><h4>not available for this career</h4></center>')
+    return;
+  }
   counterOT=0;
   $('#bodyRemainingClassesTable').html('')
   remaining.forEach(element => {
@@ -290,6 +304,10 @@ function viewRemaining(nameScreen) {
 }
 function viewAvalibles(nameScreen) {
   viewScreen(nameScreen)
+  if (!functions) {
+    $('.bdA').html('<center><h4>not available for this career</h4></center>')
+    return;
+  }
   counterOT = 0;
   $('#bodyAvaliblesClassesTable').html('')
   available.forEach(element => {
@@ -336,6 +354,10 @@ function viewAvalibles(nameScreen) {
 }
 function viewPlan(nameScreen) {
   viewScreen(nameScreen)
+  if (!functions) {
+    $('.frame').html('<center><h4>not available for this career</h4></center>')
+    return;
+  }
   $('#planFrame').attr('src', '/planDeEstudios/'+data.INFO.Carrera+'.jpg')
 }
 function back(nameScreen) {
