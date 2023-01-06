@@ -40,8 +40,8 @@ async function openRegister(req,res,next){
 
 async function login(req,res,next){
     //login with credentials 
-    await page.type('#MainContent_txt_cuenta', req.params['cuenta']);
-    await page.type('#MainContent_txt_clave', req.params['clave']);
+    await page.type('#MainContent_txt_cuenta', req.body['cuenta']);
+    await page.type('#MainContent_txt_clave', req.body['clave']);
     await page.click('#MainContent_Button1');
   
     //go to history
@@ -69,7 +69,7 @@ async function pageNumber(req,res,next){
     await next();
 }
 
-app.post('/api/register/:cuenta/:clave', openRegister, login, pageNumber, async function (req, res) {
+app.post('/api/register', openRegister, login, pageNumber, async function (req, res) {
   
     //JSON response
     const classRes = {
@@ -125,8 +125,8 @@ app.post('/api/register/:cuenta/:clave', openRegister, login, pageNumber, async 
   
     await page.close();
     page = null;
-    req.session.number = req.params.cuenta;
-    req.session.key = req.params.clave;
+    req.session.number = req.body.cuenta;
+    req.session.key = req.body.clave;
     res.send(classRes);
     
 });

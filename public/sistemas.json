@@ -78,7 +78,7 @@
     {"codigo":"IS911","nombre":"Micropocesadores","uv":"4","requisitos":["IS603","",""]},
     {"codigo":"IS914","nombre":"Liderazgo para el cambio","uv":"3","requisitos":["IS820","",""]},
     {"codigo":"IS912","nombre":"Sistemas expertos","uv":"3","requisitos":["IS701","",""]},
-    {"codigo":"IS913","nombre":"Diseño de Compiladores","uv":"3","requisitos":["IS603","",""]},
+    {"codigo":"IS913","nombre":"Diseño de Compiladores","uv":"3","requisitos":["IS603","",""]}
 ],
 "classes":[
     {"codigo":"IS110","nombre":"Intro. a sistemas","uv":"3","requisitos":["","",""]},

@@ -16,15 +16,6 @@ if ("serviceWorker" in navigator) {
   });
 }
 
-window.onbeforeunload = function(e) { 
-  if (viewActive != '') {
-    e.preventDefault();
-    back(viewActive);
-    viewActive='';
-    return
-  }
-};
-
 (async ()=>{
   $('.name').text(data.INFO.Nombre)
   $('.career').text(data.INFO.Carrera)
@@ -180,12 +171,64 @@ function viewScreen(nameScreen) {
 function viewHistory(nameScreen) {
   viewScreen(nameScreen)
   loadGraph();
-
+  $('#bodyHistoryClassesTable').html('')
+  periodsCLH = [];
+  data.classes.reverse().forEach(element => {
+    if (!(periodsCLH.includes(element.PERIODO.trim() + ' PAC ' + element.ANIO.trim()))){
+      periodsCLH.push((element.PERIODO.trim() + ' PAC ' + element.ANIO.trim()))
+      $('#bodyHistoryClassesTable').append(`
+      <tr>
+        <td class="dataperiod" colspan="4">${(element.PERIODO.trim() + ' PAC ' + element.ANIO.trim())}</td>
+      </tr>`)
+    }
+    $('#bodyHistoryClassesTable').append(`
+      <tr>
+        <td>${element.CODIGO.trim()}</td>
+        <td>${element.ASIGNATURA}</td>
+        <td>${element.UV}</td>
+        <td>${element.CALIFICACION}</td>
+      </tr>`)
+  });
 }
 function viewHAll(nameScreen) {
   viewScreen(nameScreen)
+  counterOT = 0;
   $('#bodyAllClassesTable').html('')
   career.classes.forEach(element => {
+    if (element.codigo.trim() === "optativa" || element.codigo.trim() === "Electiva") {
+      ELMClasses = career.electivas[element.nombre];
+      if (element.codigo.trim() === "optativa") {
+        ELMClasses = career.optativas;
+      }
+      dt = ``;
+      ELMClasses.forEach(cls => {
+        dt+=`<tr style="width:100%; border-bottom:none;">
+        <td class="OE">${cls.codigo.trim()}</td>
+        <td class="OE">${cls.nombre}</td>
+        <td class="OE">${cls.uv}</td>
+        <td class="OE">${cls.requisitos}</td>
+      </tr>`;
+      });
+      
+      $('#bodyAllClassesTable').append(`
+        <tr>
+          <td>${element.codigo.trim()}</td>
+          <td>${element.nombre}</td>
+          <td>${element.uv}</td>
+          <td onclick="viewPanel('${"ALL"+element.codigo.trim()+counterOT}')"><i class="fa-solid fa-chevron-down"></i></td>
+        </tr>
+        <tr id="${"ALL"+element.codigo.trim()+counterOT}" style="display:none;">
+          <td style="width:100%;" colspan="4">
+            <table>
+              <tbody>
+              ${dt}
+              </tbody>
+            </table>
+          </td>
+        </tr>`);
+      counterOT++
+      return;
+    }
     $('#bodyAllClassesTable').append(`
       <tr>
         <td>${element.codigo.trim()}</td>
@@ -209,10 +252,10 @@ function viewRemaining(nameScreen) {
       dt = ``;
       ELMClasses.forEach(cls => {
         dt+=`<tr style="width:100%; border-bottom:none;">
-        <td>${cls.codigo.trim()}</td>
-        <td>${cls.nombre}</td>
-        <td>${cls.uv}</td>
-        <td>${cls.requisitos}</td>
+        <td class="OE">${cls.codigo.trim()}</td>
+        <td class="OE">${cls.nombre}</td>
+        <td class="OE">${cls.uv}</td>
+        <td class="OE">${cls.requisitos}</td>
       </tr>`;
       });
       
@@ -254,10 +297,10 @@ function viewAvalibles(nameScreen) {
       dt = ``;
       element.classes.forEach(cls => {
         dt+=`<tr style="width:100%; border-bottom:none;">
-        <td>${cls.codigo.trim()}</td>
-        <td>${cls.nombre}</td>
-        <td>${cls.uv}</td>
-        <td>${cls.requisitos}</td>
+        <td class="OE">${cls.codigo.trim()}</td>
+        <td class="OE">${cls.nombre}</td>
+        <td class="OE">${cls.uv}</td>
+        <td class="OE">${cls.requisitos}</td>
       </tr>`;
       });
       
@@ -295,7 +338,6 @@ function viewPlan(nameScreen) {
   viewScreen(nameScreen)
   $('#planFrame').attr('src', '/planDeEstudios/'+data.INFO.Carrera+'.jpg')
 }
-
 function back(nameScreen) {
   viewActive='';
   $('#'+nameScreen).css('display', 'block');
@@ -317,13 +359,21 @@ function viewPanel(namePanel) {
   }
 }
 
-
-
 anios = {};
 global = {"labels":[],"data":[{
   label: "GLOBAL",
   data: [],
-  tension: 0.1
+  tension: 0.1,
+  pointRadius: 8,
+  pointHoverRadius: 15
+}]};
+CLG = {"labels":[],"data":[{
+  label: "CLASSES",
+  data: [],
+  tension: 0.1,
+  pointStyle: 'circle',
+  pointRadius: 8,
+  pointHoverRadius: 15
 }]};
 dataCTX = [];
 
@@ -331,6 +381,8 @@ data.classes.forEach(element => {
   if (element.CALIFICACION < 65) {
     return
   }
+  CLG.labels.push(element.ASIGNATURA);
+  CLG.data[0].data.push(element.CALIFICACION);
   if (!(element.ANIO.trim() in anios)) {
       anios[element.ANIO.trim()] = {
         1: {
@@ -364,7 +416,9 @@ for (const anio in anios) {
   dataCTX.push({
     label: anio,
     data: [(anios[anio][1].snota/anios[anio][1].uv),(anios[anio][2].snota/anios[anio][2].uv),(anios[anio][3].snota/anios[anio][3].uv)],
-    tension: 0.1
+    tension: 0.1,
+    pointRadius: 5,
+    pointHoverRadius: 15
   },)
 
   GL1[0] += anios[anio][1].snota;
@@ -385,6 +439,9 @@ function loadGraph() {
   }
   if (graph2 != null) {
     graph2.destroy();
+  }
+  if (graph3 != null) {
+    graph3.destroy();
   }
 
   const ctx0 = document.getElementById('myChartHistoryG');
@@ -440,4 +497,34 @@ function loadGraph() {
         }
       },
     });
+
+  const ctx2 = document.getElementById('myChartHistoryCL');
+  graph3 =  new Chart(ctx2, {
+      type: 'line',
+      data: {
+      labels: CLG.labels,
+      datasets: CLG.data
+    },
+      options: {
+        scales: {
+          y: {
+            max:100
+          },
+          x: {
+            display: false
+          }
+        },
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+          title: {
+            display: false,
+            text: 'Chart.js Doughnut Chart'
+          }
+        }
+      },
+  });
 }

@@ -168,7 +168,10 @@
     <script>
         function login() {
             $('.modal').css('visibility','visible');
-            $.post(`/api/register/${$('#numberInput').val()}/${$('#passInput').val()}`, {})
+            $.post(`/api/register`, {
+                "cuenta":$('#numberInput').val(),
+                "clave":$('#passInput').val()
+            })
             .done(function (response) {
                 $('.modal').css('visibility','hidden');
                 localStorage.setItem('data', JSON.stringify(response));

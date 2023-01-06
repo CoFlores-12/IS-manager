@@ -121,3 +121,9 @@ select {
 select:focus{
     border: 1px solid rgba(17, 98, 173, 0.562);
 }
+.dataperiod {
+    background-color: rgb(211, 211, 211) !important;
+}
+.OE {
+    background-color: rgb(224, 224, 224) !important;
+}
