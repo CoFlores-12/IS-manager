@@ -3,7 +3,7 @@
 <head>
   <script>
     data=[];
-    if (localStorage.getItem('data') === null) {
+    if (localStorage.getItem('data') != null) {
       window.location.href = '/';
     }
     data=JSON.parse(localStorage.getItem('data'));
@@ -26,12 +26,25 @@
 </head>
 <body>
 
+  <div class="modalRefresh">
+    <div class="cardMR">
+      <h1>updating data</h1>
+      <p class="infoUpdate"></p>
+      <div id="myProgress">
+        <div id="myBar"></div>
+      </div>
+    </div>
+  </div>
     <div id="main">
       <div class="header" style="padding: 0 16px;">
         <h1>Study Process</h1>
         <div class="infoStudent">
-            <span class="name"></span><br>
-            <span class="career"></span>
+          <div class="refresh" onclick="refresh()">
+            <i class="fa-solid fa-arrows-rotate"></i>
+            Refresh
+          </div>
+            <span class="name">Cesar obeth flores flores</span><br>
+            <span class="career"> ingenieria en sistemas</span>
             <div class="chart" style="position: relative; height:20vh; width:100%; margin-top: 20px;">
                 <canvas id="myChart"></canvas>
             </div>

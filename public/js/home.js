@@ -553,3 +553,28 @@ function loadGraph() {
       },
   });
 }
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+async function refresh() {
+  $('.modalRefresh').css('display', 'flex');
+  $('#myBar').css('width', '0%');
+  $('.infoUpdate').html('opening instance');
+  await sleep(1000);
+  $('.infoUpdate').html('logging in Registro');
+  $('#myBar').css('width', '10%');
+  await sleep(2000);
+  $('#myBar').css('width', '30%');
+  $('.infoUpdate').html('going to academic record');
+  await sleep(1000);
+  $('#myBar').css('width', '50%');
+  $('.infoUpdate').html('getting student information');
+  await sleep(1000);
+  $('#myBar').css('width', '70%');
+  $('.infoUpdate').html('getting class informationgetting student information');
+  await sleep(3000);
+  $('#myBar').css('width', '100%');
+  $('.infoUpdate').html('Done!');
+  await sleep(500);
+  $('.modalRefresh').css('display', 'none');
+}
