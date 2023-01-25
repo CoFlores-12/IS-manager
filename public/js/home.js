@@ -48,6 +48,9 @@ function init() {
     $('.chart').css('height', '0px')
     return;
   }
+  caches.open("ISmanager-caches").then(cache => {
+    cache.add("https://is-manager.vercel.app/"+'planDeEstudios/'+data.INFO.Carrera+'.jpg');
+  })
   career = JSON.parse(localStorage.getItem('career'));
   all = career.classes;
 
