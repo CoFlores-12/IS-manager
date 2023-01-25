@@ -3,7 +3,7 @@
 <head>
   <script>
     data=[];
-    if (localStorage.getItem('data') != null) {
+    if (localStorage.getItem('data') === null) {
       window.location.href = '/';
     }
     data=JSON.parse(localStorage.getItem('data'));
