@@ -571,7 +571,7 @@ async function refresh() {
   $('.infoUpdate').html('getting student information');
   await sleep(1000);
   $('#myBar').css('width', '70%');
-  $('.infoUpdate').html('getting class informationgetting student information');
+  $('.infoUpdate').html('getting student information');
   await sleep(3000);
   $('#myBar').css('width', '100%');
   $('.infoUpdate').html('Done!');
