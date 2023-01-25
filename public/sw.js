@@ -1,7 +1,6 @@
 const assets = [
     "/",
     "https://code.jquery.com/jquery-3.6.3.min.js",
-    "https://kit.fontawesome.com/1e8824e8c2.js",
     "https://is-manager.vercel.app/index.html",
     "https://is-manager.vercel.app/js/home.js",
     "https://is-manager.vercel.app/css/css/index.css",
