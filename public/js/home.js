@@ -586,7 +586,7 @@ async function refresh() {
           $('.infoUpdate').html('Done!');
           await sleep(1000);
           
-          $('.infoUpdate').html((responseclasses.length - data.classes.length) + ' classes added');
+          $('.infoUpdate').html((response.classes.length - data.classes.length) + ' classes added');
 
           await sleep(2000);
           $('.modalRefresh').css('display', 'none');
