@@ -43,8 +43,8 @@
             <i class="fa-solid fa-arrows-rotate"></i>
             Refresh
           </div>
-            <span class="name">Cesar obeth flores flores</span><br>
-            <span class="career"> ingenieria en sistemas</span>
+            <span class="name"></span><br>
+            <span class="career"></span>
             <div class="chart" style="position: relative; height:20vh; width:100%; margin-top: 20px;">
                 <canvas id="myChart"></canvas>
             </div>
@@ -70,6 +70,8 @@
         <div onclick="viewHAll('all')" class="opt"><span>see all classes</span><i class="fa-solid fa-chevron-right"></i></div>
         <hr>
         <div onclick="viewPlan('plan')" class="opt"><span>see study plan</span><i class="fa-solid fa-chevron-right"></i></div>
+        <hr>
+        <div onclick="viewPlan('about')" class="opt"><span>about</span><i class="fa-solid fa-chevron-right"></i></div>
     </main>
 
     </div>
@@ -176,6 +178,19 @@
       </div>
       <div class="frame">
         <img id="planFrame" src="" alt="" >
+      </div>
+    </div>
+    <div id="about">
+      <div class="header row center-y">
+        <span onclick="back('about')" class="back"><i class="fa-solid fa-chevron-left"></i> Back</span>
+        <span class="title">about</span>
+        <span style="visibility: hidden;"><i class="fa-solid fa-chevron-left"></i> Back</span>
+      </div>
+      <div class="about">
+        <img src="./logo.png" width="30%" alt="">
+        <h1>IS-Manager</h1>
+        <br>
+        <h5>by: Cesar Obeth F. Flores</h5>
       </div>
     </div>
 
