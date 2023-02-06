@@ -246,7 +246,6 @@ app.post('/api/refresh4', async function (req, res) {
   
     await page.close();
     page = null;
-    browser = null;
     res.send(classRes);
 });
 

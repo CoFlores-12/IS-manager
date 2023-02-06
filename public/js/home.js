@@ -585,8 +585,12 @@ async function refresh() {
           $('#myBar').css('width', '100%');
           $('.infoUpdate').html('Done!');
           await sleep(1000);
-          $('.modalRefresh').css('display', 'none');
+          
+          $('.infoUpdate').html((responseclasses.length - data.classes.length) + ' classes added');
 
+          await sleep(2000);
+          $('.modalRefresh').css('display', 'none');
+          
           localStorage.setItem('data', JSON.stringify(response));
           location.reload()
 
