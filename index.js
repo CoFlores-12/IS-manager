@@ -153,9 +153,10 @@ app.post('/api/refresh1', async function (req, res) {
 app.post('/api/refresh2', async function (req, res) {
   
   console.log(req.session);
-  console.log(req.session.number);
+
   if (req.session.number == null) {
     res.status(500).send(`Not Logger`)
+    return;
   }
 
   //login with credentials 
@@ -163,6 +164,7 @@ app.post('/api/refresh2', async function (req, res) {
   await req.page.type('#MainContent_txt_clave', req.session.key);
   await req.page.click('#MainContent_Button1');
 
+  console.log(req.session);
   //go to history
   try {
     await req.page.waitForSelector('#MainContent_LinkButton2');
@@ -170,6 +172,8 @@ app.post('/api/refresh2', async function (req, res) {
     res.status(500).send("Invalid Credentials");
     return;
   }
+
+  console.log(req.session);
   res.send("ready");
     
 });
