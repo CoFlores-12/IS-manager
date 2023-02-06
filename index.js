@@ -142,28 +142,28 @@ app.post('/api/refresh1', async function (req, res) {
         ignoreHTTPSErrors: true,
     });
   }
-  req.session.browser = browser;
+  req.browser = browser;
   //go to login page
-  req.session.page = await req.session.browser.newPage();
-  await req.session.page.goto('https://registro.unah.edu.hn/pregra_estu_login.aspx');
+  req.page = await req.browser.newPage();
+  await req.page.goto('https://registro.unah.edu.hn/pregra_estu_login.aspx');
   res.send("ready");
     
 });
 
 app.post('/api/refresh2', async function (req, res) {
   
-  if (req.session.number === undefined) {
+  if (req.number === undefined) {
     res.status(500).send(`Not Logger`)
   }
 
   //login with credentials 
-  await req.session.page.type('#MainContent_txt_cuenta', req.session.number);
-  await req.session.page.type('#MainContent_txt_clave', req.session.key);
-  await req.session.page.click('#MainContent_Button1');
+  await req.page.type('#MainContent_txt_cuenta', req.session.number);
+  await req.page.type('#MainContent_txt_clave', req.session.key);
+  await req.page.click('#MainContent_Button1');
 
   //go to history
   try {
-    await req.session.page.waitForSelector('#MainContent_LinkButton2');
+    await req.page.waitForSelector('#MainContent_LinkButton2');
   } catch (error) {
     res.status(500).send("Invalid Credentials");
     return;
@@ -174,12 +174,12 @@ app.post('/api/refresh2', async function (req, res) {
 
 app.post('/api/refresh3', async function (req, res) {
  
-  await req.session.page.click('#MainContent_LinkButton2');
+  await req.page.click('#MainContent_LinkButton2');
   
-  await req.session.page.waitForSelector('#MainContent_ASPxPageControl1_ASPxGridView2_DXMainTable');
+  await req.page.waitForSelector('#MainContent_ASPxPageControl1_ASPxGridView2_DXMainTable');
 
   //get number of pages in history
-  req.pages = await req.session.page.evaluate(() => {
+  req.pages = await req.page.evaluate(() => {
     const data = document.getElementsByClassName('dxpSummary_Aqua');
     const myArray = data[0].innerHTML.split(" ");
     return myArray[3];
@@ -198,7 +198,7 @@ app.post('/api/refresh4', async function (req, res) {
     };
   
     for (let i = 0; i < req.pages; i++) {
-      responseClass = await req.session.page.evaluate(() => { 
+      responseClass = await req.page.evaluate(() => { 
         const  clases = [];
         //get all elements of class table
         const elements = document.querySelectorAll('#MainContent_ASPxPageControl1_ASPxGridView2_DXMainTable tbody tr');
@@ -221,16 +221,16 @@ app.post('/api/refresh4', async function (req, res) {
         classRes.classes.push(clas);
       });
     //next page in history
-    await req.session.page.evaluate(() => {
+    await req.page.evaluate(() => {
       aspxGVPagerOnClick("MainContent_ASPxPageControl1_ASPxGridView2","PBN");
     });
   
-    await req.session.page.waitForTimeout(600);
+    await req.page.waitForTimeout(600);
   }
   
   
     //get averanges
-    const promedio = await req.session.page.evaluate(() => {
+    const promedio = await req.page.evaluate(() => {
       const obj = {
           "Indice": {
               'global': document.getElementById('MainContent_ASPxRoundPanel2_ASPxLabel11').innerHTML,
@@ -243,9 +243,9 @@ app.post('/api/refresh4', async function (req, res) {
     });
     classRes.INFO=promedio;
   
-    await req.session.page.close();
-    req.session.page = null;
-    req.session.browser = null;
+    await req.page.close();
+    req.page = null;
+    req.browser = null;
     res.send(classRes);
 });
 
