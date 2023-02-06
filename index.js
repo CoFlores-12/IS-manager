@@ -152,7 +152,7 @@ app.post('/api/refresh1', async function (req, res) {
 
 app.post('/api/refresh2', async function (req, res) {
   
-  if (req.number === undefined) {
+  if (!req.session.number) {
     res.status(500).send(`Not Logger`)
   }
 
