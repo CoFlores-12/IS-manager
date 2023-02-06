@@ -601,16 +601,17 @@ async function refresh() {
         })
           
       }).fail(async function(xhr, status, res) {
-        $('.infoUpdate').html('Login again please');
-        await sleep(2000);
-        $('.modalRefresh').css('display', 'none');
-        window.location.href = '/index.html';
-      })
-
-    }).fail(async function(xhr, status, res) {
+        
       $('.infoUpdate').html('Error in server');
       await sleep(2000);
       $('.modalRefresh').css('display', 'none');
+      })
+
+    }).fail(async function(xhr, status, res) {
+      $('.infoUpdate').html('Login again please');
+        await sleep(2000);
+        $('.modalRefresh').css('display', 'none');
+        window.location.href = '/index.html';
     })
 
   }).fail(async function(xhr, status, res) {
