@@ -560,21 +560,62 @@ async function refresh() {
   $('.modalRefresh').css('display', 'flex');
   $('#myBar').css('width', '0%');
   $('.infoUpdate').html('opening instance');
-  await sleep(1000);
-  $('.infoUpdate').html('logging in Registro');
-  $('#myBar').css('width', '10%');
-  await sleep(2000);
-  $('#myBar').css('width', '30%');
-  $('.infoUpdate').html('going to academic record');
-  await sleep(1000);
-  $('#myBar').css('width', '50%');
-  $('.infoUpdate').html('getting student information');
-  await sleep(1000);
-  $('#myBar').css('width', '70%');
-  $('.infoUpdate').html('getting student information');
+
+  $.post(`/api/refresh1`, {})
+  .done(function (response) {
+
+    $('.infoUpdate').html('logging in Registro');
+    $('#myBar').css('width', '25%');
+
+    $.post(`/api/refresh2`, {})
+    .done(function (response) {
+
+      $('#myBar').css('width', '50%');
+      $('.infoUpdate').html('going to academic record');
+
+      $.post(`/api/refresh3`, {})
+      .done(function (response) {
+
+        $('#myBar').css('width', '75%');
+        $('.infoUpdate').html('getting student information');
+        
+        $.post(`/api/refresh4`, {})
+        .done(async function (response) {
+
+          $('#myBar').css('width', '100%');
+          $('.infoUpdate').html('Done!');
+          await sleep(1000);
+          $('.modalRefresh').css('display', 'none');
+
+          localStorage.setItem('data', JSON.stringify(response));
+          location.reload()
+
+        }).fail(async function(xhr, status, res) {
+          $('.infoUpdate').html('Error in server');
+          await sleep(2000);
+          $('.modalRefresh').css('display', 'none');
+        })
+          
+      }).fail(async function(xhr, status, res) {
+        $('.infoUpdate').html('Login again please');
+        await sleep(2000);
+        $('.modalRefresh').css('display', 'none');
+        window.location.href = '/index.html';
+      })
+
+    }).fail(async function(xhr, status, res) {
+      $('.infoUpdate').html('Error in server');
+      await sleep(2000);
+      $('.modalRefresh').css('display', 'none');
+    })
+
+  }).fail(async function(xhr, status, res) {
+    $('.infoUpdate').html('Error in server');
+    await sleep(2000);
+    $('.modalRefresh').css('display', 'none');
+  })
+
+
   await sleep(3000);
-  $('#myBar').css('width', '100%');
-  $('.infoUpdate').html('Done!');
-  await sleep(500);
-  $('.modalRefresh').css('display', 'none');
+
 }

@@ -50,6 +50,7 @@ async function login(req,res,next){
       await next();
     } catch (error) {
       res.status(500).send("Invalid Credentials");
+      return;
     }
 }
 
@@ -105,7 +106,7 @@ app.post('/api/register', openRegister, login, pageNumber, async function (req, 
       aspxGVPagerOnClick("MainContent_ASPxPageControl1_ASPxGridView2","PBN");
     });
   
-    await page.waitForTimeout(900);
+    await page.waitForTimeout(600);
   }
   
   
@@ -130,7 +131,124 @@ app.post('/api/register', openRegister, login, pageNumber, async function (req, 
     res.send(classRes);
     
 });
+
+app.post('/api/refresh1', async function (req, res) {
+  if (browser === null) {
+    browser = await chrome.puppeteer.launch({
+        args: [...chrome.args, "--hide-scrollbars", "--disable-web-security"],
+        defaultViewport: chrome.defaultViewport,
+        executablePath: await chrome.executablePath,
+        headless: true,
+        ignoreHTTPSErrors: true,
+    });
+  }
+  req.session.browser = browser;
+  //go to login page
+  req.session.page = await req.session.browser.newPage();
+  await req.session.page.goto('https://registro.unah.edu.hn/pregra_estu_login.aspx');
+  res.send("ready");
     
+});
+
+app.post('/api/refresh2', async function (req, res) {
+  
+  if (req.session.number === undefined) {
+    res.status(500).send(`Not Logger`)
+  }
+
+  //login with credentials 
+  await req.session.page.type('#MainContent_txt_cuenta', req.session.number);
+  await req.session.page.type('#MainContent_txt_clave', req.session.key);
+  await req.session.page.click('#MainContent_Button1');
+
+  //go to history
+  try {
+    await req.session.page.waitForSelector('#MainContent_LinkButton2');
+  } catch (error) {
+    res.status(500).send("Invalid Credentials");
+    return;
+  }
+  res.send("ready");
+    
+});
+
+app.post('/api/refresh3', async function (req, res) {
+ 
+  await req.session.page.click('#MainContent_LinkButton2');
+  
+  await req.session.page.waitForSelector('#MainContent_ASPxPageControl1_ASPxGridView2_DXMainTable');
+
+  //get number of pages in history
+  req.pages = await req.session.page.evaluate(() => {
+    const data = document.getElementsByClassName('dxpSummary_Aqua');
+    const myArray = data[0].innerHTML.split(" ");
+    return myArray[3];
+  });
+  
+  res.send("ready");
+    
+});
+
+app.post('/api/refresh4', async function (req, res) {
+ 
+    //JSON response
+    const classRes = {
+      "classes": [],
+      "INFO": {}
+    };
+  
+    for (let i = 0; i < req.pages; i++) {
+      responseClass = await req.session.page.evaluate(() => { 
+        const  clases = [];
+        //get all elements of class table
+        const elements = document.querySelectorAll('#MainContent_ASPxPageControl1_ASPxGridView2_DXMainTable tbody tr');
+  
+        for (let index = 9; index<elements.length; index++){
+          clases.push({
+              'CODIGO': elements[index].getElementsByTagName('td')[0].innerHTML,
+              'ASIGNATURA': elements[index].getElementsByTagName('td')[1].innerHTML,
+              'UV': elements[index].getElementsByTagName('td')[2].innerHTML,
+              'SECCION': elements[index].getElementsByTagName('td')[3].innerHTML,
+              'ANIO': elements[index].getElementsByTagName('td')[4].innerHTML,
+              'PERIODO': elements[index].getElementsByTagName('td')[5].innerHTML,
+              'CALIFICACION': elements[index].getElementsByTagName('td')[6].innerHTML,
+              'OBS': elements[index].getElementsByTagName('td')[7].innerHTML
+            });
+        }
+        return clases;
+      });
+      responseClass.forEach(clas => {
+        classRes.classes.push(clas);
+      });
+    //next page in history
+    await req.session.page.evaluate(() => {
+      aspxGVPagerOnClick("MainContent_ASPxPageControl1_ASPxGridView2","PBN");
+    });
+  
+    await req.session.page.waitForTimeout(600);
+  }
+  
+  
+    //get averanges
+    const promedio = await req.session.page.evaluate(() => {
+      const obj = {
+          "Indice": {
+              'global': document.getElementById('MainContent_ASPxRoundPanel2_ASPxLabel11').innerHTML,
+              'periodo': document.getElementById('MainContent_ASPxRoundPanel2_ASPxLabel12').innerHTML
+          },
+          "Nombre": document.getElementById('MainContent_ASPxRoundPanel2_ASPxLabel8').innerHTML,
+          "Carrera": document.getElementById('MainContent_ASPxRoundPanel2_ASPxLabel9').innerHTML
+      };
+      return obj;
+    });
+    classRes.INFO=promedio;
+  
+    await req.session.page.close();
+    req.session.page = null;
+    req.session.browser = null;
+    res.send(classRes);
+});
+
 app.use('/api/db', db);
 
 app.get('/api/test', (req, res) => {
