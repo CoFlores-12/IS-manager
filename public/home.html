@@ -71,6 +71,8 @@
         <hr>
         <div onclick="viewPlan('plan')" class="opt"><span>see study plan</span><i class="fa-solid fa-chevron-right"></i></div>
         <hr>
+        <div onclick="viewMap('map')" class="opt"><span>see map</span><i class="fa-solid fa-chevron-right"></i></div>
+        <hr>
         <div onclick="viewPlan('about')" class="opt"><span>about</span><i class="fa-solid fa-chevron-right"></i></div>
     </main>
 
@@ -84,12 +86,14 @@
       <div class="bodyHistory">
         <select name="graph" id="graph">
           <option value="myChartHistoryG">Global</option>
-          <option value="myChartHistoryAP">Annual period</option>
+          <option value="myChartHistoryAP">Anual</option>
+          <option value="myChartHistoryA">Periods</option>
           <option value="myChartHistoryCL">Classes</option>
         </select>
         <div class="chart" style="position: relative; height:30vh; width:100%; margin-top: 20px;">
           <canvas  id="myChartHistoryG"></canvas>
           <canvas style="display: none;" id="myChartHistoryAP"></canvas>
+          <canvas style="display: none;" id="myChartHistoryA"></canvas>
           <canvas style="display: none;" id="myChartHistoryCL"></canvas>
         </div>
         <table>
@@ -191,6 +195,16 @@
         <h1>IS-Manager</h1>
         <br>
         <h5>by: Cesar Obeth F. Flores</h5>
+      </div>
+    </div>
+    <div id="map">
+      <div class="header row center-y">
+        <span onclick="back('map')" class="back"><i class="fa-solid fa-chevron-left"></i> Back</span>
+        <span class="title">Map</span>
+        <span style="visibility: hidden;"><i class="fa-solid fa-chevron-left"></i> Back</span>
+      </div>
+      <div class="map">
+        <iframe style="height: 120%;" width="300%" id="framemap" src="" frameborder="0"></iframe>
       </div>
     </div>
 

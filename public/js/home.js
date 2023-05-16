@@ -5,6 +5,7 @@ viewActive='';
 graph1 = null;
 graph2 = null;
 graph3 = null;
+graph4 = null;
 functions = true;
 
 //install SW
@@ -362,6 +363,7 @@ function viewPlan(nameScreen) {
     return;
   }
   $('#planFrame').attr('src', '/planDeEstudios/'+data.INFO.Carrera+'.jpg')
+  
 }
 function back(nameScreen) {
   viewActive='';
@@ -384,6 +386,29 @@ function viewPanel(namePanel) {
   }
 }
 
+function viewMap(nameScreen) {
+  viewScreen(nameScreen)
+  $('#framemap').attr('src', '/organigrama/'+data.INFO.Carrera+'.svg')
+  let framemap = document.getElementById('framemap');
+  framemap.addEventListener("load", function() {
+    let frameElements = framemap.contentWindow.document;
+    data.classes.forEach(element => {
+      if (frameElements.getElementById('svg'+element.CODIGO.trim()) != null) {
+        frameElements.getElementById('svg'+element.CODIGO.trim()).setAttribute('fill', 'rgba(94,178,240,1)');
+      }
+    });
+    available.forEach(element => {
+      if (element.codigo.trim() === "optativa" || element.codigo.trim() === "Electiva") {
+        return
+      }
+      if (frameElements.getElementById('svg'+element.codigo.trim()) != null) {
+        frameElements.getElementById('svg'+element.codigo.trim()).setAttribute('fill', '#42b883');
+      }
+      
+    });
+  });
+}
+
 anios = {};
 global = {"labels":[],"data":[{
   label: "GLOBAL",
@@ -400,7 +425,28 @@ CLG = {"labels":[],"data":[{
   pointRadius: 8,
   pointHoverRadius: 15
 }]};
-dataCTX = [];
+dataCTX = [{
+  label: 'Average',
+  data: [],
+  tension: 0.1,
+  pointRadius: 5,
+  pointHoverRadius: 15
+}];
+aniosbar = [];
+dataBar = [
+  {
+    label: 'I PAC',
+    data: []
+  },
+  {
+    label: 'II PAC',
+    data: []
+  },
+  {
+    label: 'III PAC',
+    data: []
+  }
+];
 
 data.classes.forEach(element => {
   if (element.CALIFICACION < 65) {
@@ -438,13 +484,18 @@ data.classes.forEach(element => {
 
 GL1=[0,0];
 for (const anio in anios) {
-  dataCTX.push({
-    label: anio,
-    data: [(anios[anio][1].snota/anios[anio][1].uv),(anios[anio][2].snota/anios[anio][2].uv),(anios[anio][3].snota/anios[anio][3].uv)],
-    tension: 0.1,
-    pointRadius: 5,
-    pointHoverRadius: 15
-  },)
+  aniosbar.push(anio)
+  dataBar[0].data.push((anios[anio][1].snota/anios[anio][1].uv))
+  dataBar[1].data.push((anios[anio][2].snota/anios[anio][2].uv))
+  dataBar[2].data.push((anios[anio][3].snota/anios[anio][3].uv))
+  let anual = [0,0]
+  anual[0] += anios[anio][1].snota;
+  anual[1] += anios[anio][1].uv;
+  anual[0] += anios[anio][2].snota;
+  anual[1] += anios[anio][2].uv;
+  anual[0] += anios[anio][3].snota;
+  anual[1] += anios[anio][3].uv;
+  dataCTX[0].data.push(anual[0]/anual[1]);
 
   GL1[0] += anios[anio][1].snota;
   GL1[1] += anios[anio][1].uv;
@@ -467,6 +518,9 @@ function loadGraph() {
   }
   if (graph3 != null) {
     graph3.destroy();
+  }
+  if (graph4 != null) {
+    graph4.destroy();
   }
 
   const ctx0 = document.getElementById('myChartHistoryG');
@@ -500,8 +554,35 @@ function loadGraph() {
   graph2 = new Chart(ctx1, {
       type: 'line',
       data: {
-      labels: ['I PAC', 'II PAC', 'III PAC'],
+      labels: aniosbar,
       datasets: dataCTX
+    },
+      options: {
+        scales: {
+          y: {
+            max:100
+          }
+        },
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+          title: {
+            display: false,
+            text: 'Chart.js Doughnut Chart'
+          }
+        }
+      },
+    });
+
+  const ctx4 = document.getElementById('myChartHistoryA');
+  graph4 = new Chart(ctx4, {
+      type: 'bar',
+      data: {
+      labels: aniosbar,
+      datasets: dataBar
     },
       options: {
         scales: {

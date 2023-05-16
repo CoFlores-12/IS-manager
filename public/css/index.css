@@ -136,7 +136,7 @@ main {
     justify-content: center;
     align-items: center;
 }
-#available,#all,#history,#remaining,#plan, #about{
+#available,#all,#history,#remaining,#plan, #about, #map{
     width: 100%;
     height: 100%;
     background-color: #fafaff;
@@ -155,7 +155,17 @@ z-index:9999;
     height: calc(100% - 60px) !important;
     box-sizing: border-box;
 }
-
+.map{
+    width: 100%;
+    overflow-y: scroll;
+    height: calc(100% - 60px) !important;
+    box-sizing: border-box;
+    scrollbar-width: 10px !important;
+}
+.map::-webkit-scrollbar {
+    display: none;
+  }
+   
 .title {
     font-weight: bold;
     font-size: 1.5rem;
