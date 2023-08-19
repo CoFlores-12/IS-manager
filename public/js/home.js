@@ -200,6 +200,66 @@ function viewHistory(nameScreen) {
       </tr>`)
   });
 }
+allUV = 0;
+allScores=0;
+
+ function updateAV() {
+  let tmpUV = allUV;
+  let tmpSc = allScores*1;
+  let tmpUVP = 0;
+  let tmpScP = 0;
+  allClassUVS=[];
+  let uvsIn = document.getElementsByClassName('UVS')
+  Array.from(uvsIn).forEach((el) => {
+      allClassUVS.push(el.value*1)
+  });
+  let scoresIn = document.getElementsByClassName('ScoreS')
+  Array.from(scoresIn).forEach((el,index) => {
+      tmpScP += el.value*allClassUVS[index];
+      tmpUVP += allClassUVS[index]*1;
+  });
+  
+  tmpSc+=tmpScP;
+  tmpUV+=tmpUVP;
+  console.log(allClassUVS);
+  $('#globalPS').text(((tmpSc/tmpUV).toFixed(2)) + '%')
+  $('#periodPS').text(((tmpScP/tmpUVP).toFixed(2))+'%')
+}
+function addClassSN() {
+  let contTable = document.getElementById('bodyHistoryClassesTableS')
+  contTable.innerHTML = '<tr><td colspan="2"><input type="text" value="Class Name"></td><td><input class="UVS" onchange="updateAV()" type="number" min="1" max="5" value="0"></td><td><input class="ScoreS" onchange="updateAV()" type="number" value="0" min="0" max="100"></td></tr>'+contTable.innerHTML
+}
+
+function viewSN(nameScreen) {
+  viewScreen(nameScreen)
+  $('#bodyHistoryClassesTableS').html('')
+  $('#bodyHistoryClassesTableS').append(`<tr><td colspan="4"><button onclick="addClassSN()" class="addSN">Add</button></td></tr>`)
+  periodsCLH = [];
+
+  data.classes.reverse().forEach(element => {
+    if ((element.ANIO != '2020' || element.ANIO != '2021' || element.ANIO != '2022') && element.CALIFICACION*1>64) {
+      allUV += 1*element.UV;
+      allScores += (element.UV*element.CALIFICACION);
+    }
+    if (!(periodsCLH.includes(element.PERIODO.trim() + ' PAC ' + element.ANIO.trim()))){
+      periodsCLH.push((element.PERIODO.trim() + ' PAC ' + element.ANIO.trim()))
+      $('#bodyHistoryClassesTableS').append(`
+      <tr>
+        <td class="dataperiod" colspan="4">${(element.PERIODO.trim() + ' PAC ' + element.ANIO.trim())}</td>
+      </tr>`)
+    }
+    $('#bodyHistoryClassesTableS').append(`
+      <tr>
+        <td>${element.CODIGO.trim()}</td>
+        <td>${element.ASIGNATURA}</td>
+        <td>${element.UV}</td>
+        <td>${element.CALIFICACION}%</td>
+      </tr>`)
+  });
+  $('#globalPS').text(((allScores/allUV).toFixed(2)) + '%')
+  $('#periodPS').text('0%')
+
+}
 function viewHAll(nameScreen) {
   viewScreen(nameScreen)
   if (!functions) {

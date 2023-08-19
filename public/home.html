@@ -61,17 +61,19 @@
         </div>
     </div>
     <main>
-        <div onclick="viewHistory('history')" class="opt"><span>See history</span><i class="fa-solid fa-chevron-right"></i></div>
+        <div onclick="viewHistory('history')" class="opt"><span>history</span><i class="fa-solid fa-chevron-right"></i></div>
         <hr>
-        <div onclick="viewAvalibles('available')" class="opt"><span>See classes available</span><i class="fa-solid fa-chevron-right"></i></div>
+        <div onclick="viewAvalibles('available')" class="opt"><span>classes available</span><i class="fa-solid fa-chevron-right"></i></div>
         <hr>
-        <div onclick="viewRemaining('remaining')" class="opt"><span>see classes remaining</span><i class="fa-solid fa-chevron-right"></i></div>
+        <div onclick="viewRemaining('remaining')" class="opt"><span>classes remaining</span><i class="fa-solid fa-chevron-right"></i></div>
         <hr>
-        <div onclick="viewHAll('all')" class="opt"><span>see all classes</span><i class="fa-solid fa-chevron-right"></i></div>
+        <div onclick="viewHAll('all')" class="opt"><span>all classes</span><i class="fa-solid fa-chevron-right"></i></div>
         <hr>
-        <div onclick="viewPlan('plan')" class="opt"><span>see study plan</span><i class="fa-solid fa-chevron-right"></i></div>
+        <div onclick="viewPlan('plan')" class="opt"><span>study plan</span><i class="fa-solid fa-chevron-right"></i></div>
         <hr>
-        <div onclick="viewMap('map')" class="opt"><span>see map</span><i class="fa-solid fa-chevron-right"></i></div>
+        <div onclick="viewMap('map')" class="opt"><span>map</span><i class="fa-solid fa-chevron-right"></i></div>
+        <hr>
+        <div onclick="viewSN('sn')" class="opt"><span>Simulate Score</span><i class="fa-solid fa-chevron-right"></i></div>
         <hr>
         <div onclick="viewPlan('about')" class="opt"><span>about</span><i class="fa-solid fa-chevron-right"></i></div>
     </main>
@@ -205,6 +207,38 @@
       </div>
       <div class="map">
         <iframe style="height: 100%;" width="330%" id="framemap" src="" frameborder="0"></iframe>
+      </div>
+    </div>
+    <div id="sn">
+      <div class="header row center-y" >
+        <span onclick="back('sn')" class="back"><i class="fa-solid fa-chevron-left"></i> Back</span>
+        <span class="title">Simulate</span>
+        <span style="visibility: hidden;"><i class="fa-solid fa-chevron-left"></i> Back</span>
+      </div>
+      <div class="bodyHistory">
+        <div class="av">
+            <div class="global">
+                <span>Global</span>
+                <span id="globalPS">0%</span>
+            </div>
+            <div class="periodo">
+                <span>Period</span>
+                <span id="periodPS">0%</span>
+            </div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Code</th>
+              <th>Name</th>
+              <th>UV</th>
+              <th>score</th>
+            </tr>
+          </thead>
+          <tbody id="bodyHistoryClassesTableS">
+            
+          </tbody>
+        </table>
       </div>
     </div>
 
