@@ -8,14 +8,6 @@ let browser = null;
 let page = null;
 let pages = 0;
 
-browser = await chrome.puppeteer.launch({
-    args: [...chrome.args, "--hide-scrollbars", "--disable-web-security"],
-    defaultViewport: chrome.defaultViewport,
-    executablePath: await chrome.executablePath,
-    headless: true,
-    ignoreHTTPSErrors: true,
-});
-
 //Get all students
 router.get('/', (req, res) => {
   res.send('App is running..');

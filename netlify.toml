@@ -1,2 +1,8 @@
 [build]
   functions = "functions"
+
+[[redirects]]
+  from = "/*"
+  to= "/dist/*"
+  status = 200
+  force = true
