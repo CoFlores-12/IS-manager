@@ -1,0 +1,121 @@
+{
+"name":"MERCADOTECNIA",
+"electivas":{
+   "Ciencias Naturales": [
+        {"codigo":"BI130","nombre":"Ambiental","uv":"3","requisitos":["","",""]},
+        {"codigo":"AN111","nombre":"Intro a la Astronomía","uv":"3","requisitos":["","",""]},
+        {"codigo":"FS011","nombre":"Ciencias de la Tierra","uv":"3","requisitos":["","",""]},
+        {"codigo":"AQA111","nombre":"Intro a la Arqueastronomía","uv":"3","requisitos":["","",""]},
+        {"codigo":"CTE111","nombre":"Intro a la Percepción Remota","uv":"3","requisitos":["","",""]},
+        {"codigo":"CTE112","nombre":"Intro a los Sistemas de Información Geográfica","uv":"3","requisitos":["","",""]},
+        {"codigo":"CTE113","nombre":"Intro a los Sistemas de Geoposición Global","uv":"3","requisitos":["","",""]},
+        {"codigo":"AN112","nombre":"Intro al Sistema Solar","uv":"3","requisitos":["","",""]},
+        {"codigo":"AN113","nombre":"Astronomía y el Universo","uv":"3","requisitos":["","",""]},
+        {"codigo":"AQA112","nombre":"Intro a la Arqueastronomía Maya","uv":"3","requisitos":["","",""]},
+        {"codigo":"FS102","nombre":"Energía y Cambio Climático","uv":"3","requisitos":["","",""]}
+   ],
+   "Artes o Deportes": [
+        {"codigo":"RR189","nombre":"Taller de Actualización Teatral","uv":"3","requisitos":["","",""]},
+        {"codigo":"RR172","nombre":"Taller de Máscara y Títeres","uv":"3","requisitos":["","",""]},
+        {"codigo":"RR171","nombre":"Taller de Movimiento Creativo","uv":"3","requisitos":["","",""]},
+        {"codigo":"RR1746","nombre":"Taller de Audición Musical","uv":"3","requisitos":["","",""]},
+        {"codigo":"RR180","nombre":"Taller de Guitarra Folklórica Latinoamericana","uv":"3","requisitos":["","",""]},
+        {"codigo":"RR189","nombre":"Ajedrez","uv":"3","requisitos":["","",""]},
+        {"codigo":"RR172","nombre":"Baloncesto","uv":"3","requisitos":["","",""]},
+        {"codigo":"RR171","nombre":"Fútbol","uv":"3","requisitos":["","",""]},
+        {"codigo":"RR176","nombre":"Gimnasia General","uv":"3","requisitos":["","",""]},
+        {"codigo":"RR192","nombre":"Juegos Organizados","uv":"3","requisitos":["","",""]},
+        {"codigo":"RR180","nombre":"Karate","uv":"3","requisitos":["","",""]},
+        {"codigo":"RR191","nombre":"Ping Pong","uv":"3","requisitos":["","",""]},
+        {"codigo":"RR181","nombre":"Primeros Auxilios","uv":"3","requisitos":["","",""]},
+        {"codigo":"RR173","nombre":"Volibol","uv":"3","requisitos":["","",""]},
+        {"codigo":"RR179","nombre":"Defensa Personal","uv":"3","requisitos":["","",""]},
+        {"codigo":"RR193","nombre":"Fútbol de Salón","uv":"3","requisitos":["","",""]},
+        {"codigo":"RR185","nombre":"Judo","uv":"3","requisitos":["","",""]},
+        {"codigo":"RR191","nombre":"Montañismo","uv":"3","requisitos":["","",""]},
+        {"codigo":"RR174","nombre":"Natación","uv":"3","requisitos":["","",""]},
+        {"codigo":"RR196","nombre":"Ecodeporte","uv":"3","requisitos":["","",""]},
+        {"codigo":"RR177","nombre":"Atletismo","uv":"3","requisitos":["","",""]}
+   ],
+   "Humanidades": [
+        {"codigo":"AN101","nombre":"Antropología General","uv":"3","requisitos":["","",""]},
+        {"codigo":"CP101","nombre":"Ciencias Políticas","uv":"3","requisitos":["","",""]},
+        {"codigo":"CP015","nombre":"Derechos Humanos en Honduras","uv":"3","requisitos":["","",""]},
+        {"codigo":"SC099","nombre":"Estudios de la Mujer","uv":"3","requisitos":["","",""]},
+        {"codigo":"EO021","nombre":"Técnicas de Lectura","uv":"3","requisitos":["","",""]},
+        {"codigo":"EO022","nombre":"Gramática y Expresión","uv":"3","requisitos":["","",""]},
+        {"codigo":"EO025","nombre":"Redacción General","uv":"3","requisitos":["","",""]},
+        {"codigo":"EO023","nombre":"Redacción de monografía e informes","uv":"3","requisitos":["","",""]},
+        {"codigo":"EO026","nombre":"Literatura Hondureña","uv":"3","requisitos":["","",""]},
+        {"codigo":"EO027","nombre":"Ortografía","uv":"3","requisitos":["","",""]}
+   ]
+},
+"optativas": [
+    {"codigo":"DMC095","nombre":"Desarrollo de campañas publicitarias","uv":"4","requisitos":["DMC085","",""]},
+    {"codigo":"DMC095","nombre":"Mercadotecnia turística ","uv":"4","requisitos":["DMC085","",""]},
+    {"codigo":"DMC095","nombre":"Mercadotecnia social y de servicios","uv":"4","requisitos":["DMC085","",""]},
+    {"codigo":"DMC095","nombre":"Bloques económicos y Tratados de Libre Comercio","uv":"4","requisitos":["DMC085","",""]}
+],
+"classes":[
+    {"codigo":"DET175","nombre":"Métodos Cuantitativos I","uv":"5","requisitos":["","",""]},
+    {"codigo":"Electiva","nombre":"Ciencias Naturales","uv":"3","requisitos":["","",""]},
+    {"codigo":"SC101","nombre":"Sociología","uv":"4","requisitos":["","",""]},
+    {"codigo":"HH101","nombre":"Historia ","uv":"4","requisitos":["","",""]},
+    {"codigo":"IN101","nombre":"Ingles I","uv":"4","requisitos":["","",""]},
+    {"codigo":"Electiva","nombre":"Humanidades","uv":"3","requisitos":["","",""]},
+    
+    {"codigo":"FF101","nombre":"Filosofía","uv":"4","requisitos":["","",""]},
+    {"codigo":"EG011","nombre":"Español","uv":"4","requisitos":["","",""]},
+    {"codigo":"DET280","nombre":"Métodos Cuantitativos II","uv":"5","requisitos":["DET175","",""]},
+    {"codigo":"CE020","nombre":"Principios de Economía","uv":"4","requisitos":["DET175","",""]},
+    {"codigo":"AGE102","nombre":"Administración I","uv":"4","requisitos":["SC101","",""]},
+    {"codigo":"CF014","nombre":"Contabilidad I","uv":"4","requisitos":["DET175","",""]},
+    
+    {"codigo":"DMC010","nombre":"Mercadotecnia I","uv":"4","requisitos":["AGE102","",""]},
+    {"codigo":"AGE113","nombre":"Desarrollo Empresarial","uv":"4","requisitos":["AGE102","",""]},
+    {"codigo":"CF035","nombre":"Contabilidad II","uv":"5","requisitos":["CF014","MM211",""]},
+    {"codigo":"CE040","nombre":"Microeconomía","uv":"4","requisitos":["CE020","DET280",""]},
+    {"codigo":"IN102","nombre":"Ingles II","uv":"4","requisitos":["IN101","",""]},
+    {"codigo":"AGE245","nombre":"Empresa y Derecho","uv":"4","requisitos":["AGE-02","",""]},
+    
+    {"codigo":"AGE244","nombre":"Análisis Cuantitativo I","uv":"4","requisitos":["DET280","",""]},
+    {"codigo":"DAE510","nombre":"Fundamentos de Calidad Total","uv":"4","requisitos":["DAE00","DAE405",""]},
+    {"codigo":"DMC015","nombre":"Mercadotecnia II","uv":"4","requisitos":["DMC010","",""]},
+    {"codigo":"DMC035","nombre":"Comportamiento Humano en las Organizaciones","uv":"4","requisitos":["DAE400","",""]},
+    {"codigo":"CE075","nombre":"Macroeconomía","uv":"4","requisitos":["CE040","",""]},
+    {"codigo":"DAE205","nombre":"Computación I","uv":"4","requisitos":["DET175","",""]},
+    
+    
+    {"codigo":"DMC025","nombre":"Estadística I","uv":"4","requisitos":["AGE244","",""]},
+    {"codigo":"DMC125","nombre":"Comunicación Empresarial","uv":"4","requisitos":["EG011","",""]},
+    {"codigo":"DMC020","nombre":"Mercadotecnia III","uv":"4","requisitos":["DMC015","",""]},
+    {"codigo":"DMC030","nombre":"Métodos y Técnicas de Investigación","uv":"4","requisitos":["AGE244","",""]},
+    {"codigo":"AGE286","nombre":"Creatividad e Innovación Empresarial","uv":"4","requisitos":["AGE244","DAE510","DMC015","DMC035","CE075","DAE205"]},
+    {"codigo":"AGE164","nombre":"Comportamiento individual y Organizacional","uv":"4","requisitos":["DAE400","",""]},
+    
+    {"codigo":"AGE215","nombre":"Desarrollo de Capital Humano ","uv":"4","requisitos":["DAE405","AGE164",""]},
+    {"codigo":"DMC040","nombre":"Investigación de Mercados I","uv":"4","requisitos":["DMC020","DMC025","DMC030"]},
+    {"codigo":"DMC045","nombre":"Publicidad y Promoción de Ventas","uv":"4","requisitos":["DMC020","DMC030",""]},
+    {"codigo":"DAE935","nombre":"Comercio Electrónico","uv":"4","requisitos":["DAE205","DMC020",""]},
+    {"codigo":"DAE305","nombre":"Computación II","uv":"4","requisitos":["DAE205","",""]},
+    
+    {"codigo":"Electiva","nombre":"Artes o Deportes","uv":"3","requisitos":["","",""]},
+    {"codigo":"DMC055","nombre":"Ética e Imagen Empresarial","uv":"4","requisitos":["DMC035","",""]},
+    {"codigo":"DMC060","nombre":"Mercados Financieros","uv":"4","requisitos":["CF035","",""]},
+    {"codigo":"DMC050","nombre":"Comportamiento del Consumidor","uv":"4","requisitos":["DMC020","",""]},
+    {"codigo":"DMC070","nombre":"Administración de Ventas","uv":"4","requisitos":["DMC020","",""]},
+    
+    {"codigo":"DMC075","nombre":"Desarrollo de Productos","uv":"4","requisitos":["DMC020","",""]},
+    {"codigo":"DMC080","nombre":"Distribución Física","uv":"4","requisitos":["DMC020","DAE935",""]},
+    {"codigo":"DMC065","nombre":"Investigación de Mercados II","uv":"4","requisitos":["DMC040","",""]},
+    {"codigo":"AGE276","nombre":"Administración Financiera I","uv":"4","requisitos":["DMC060","IS602",""]},
+    {"codigo":"DMC085","nombre":"Mercadotecnia Internacional ","uv":"4","requisitos":["DMC020","",""]},
+    
+    {"codigo":"AGE419","nombre":"Gerencia Estratégica","uv":"4","requisitos":["AGE276","",""]},
+    {"codigo":"DMC090","nombre":"Formulación y Evaluación de Proyectos","uv":"4","requisitos":["AGE276","",""]},
+    {"codigo":"DAE820","nombre":"Admón. de la Productividad","uv":"4","requisitos":["AGE276","",""]},
+    {"codigo":"optativa","nombre":"Electiva de Formación Específica","uv":"4","requisitos":["","",""]},
+    
+    {"codigo":"DMC005","nombre":"Seminario de investigación","uv":"4","requisitos":["AGE419","DMC090","DAE820"]}
+    ]
+}

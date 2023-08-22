@@ -1,0 +1,15 @@
+{
+    "name": "IS Manager",
+    "short_name": "IS Manager",
+    "start_url": "home.html",
+    "display": "standalone",
+    "background_color": "#fafaff",
+    "theme_color": "#fafaff",
+    "orientation": "portrait-primary",
+    "icons": [
+        {
+            "src": "logo.png",
+            "type": "image/png", "sizes": "512x512"
+        }
+    ]
+}

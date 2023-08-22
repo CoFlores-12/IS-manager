@@ -1,18 +1,30 @@
 {
-  "name": "take-screenshot",
+  "name": "web-scrapping-registro-unah",
   "version": "1.0.0",
-  "description": "",
-  "main": "take-screenshot.js",
+  "description": "Get the grades, name of the class and averages from UNAH registration page",
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
   },
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CoFlores-12/Web-Scrapping-Registro-UNAH.git"
+  },
+  "author": "Cesar Flores",
   "license": "ISC",
-  "dependencies": {
-    "chrome-aws-lambda": "^2.0.0",
-    "puppeteer-core": "^2.0.0"
+  "bugs": {
+    "url": "https://github.com/CoFlores-12/Web-Scrapping-Registro-UNAH/issues"
   },
-  "devDependencies": {
-    "puppeteer": "^2.0.0"
+  "homepage": "https://github.com/CoFlores-12/Web-Scrapping-Registro-UNAH#readme",
+  "dependencies": {
+    "chrome-aws-lambda": "^10.1.0",
+    "cookie-parser": "^1.4.6",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "mongoose": "^6.8.2",
+    "nodemon": "^2.0.19",
+    "puppeteer-core": "^10.1.0"
   }
 }
