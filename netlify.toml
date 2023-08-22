@@ -12,3 +12,6 @@
   to= "/.netlify/functions/index/"
   status = 200
   force = true
+
+[build.environment]
+  AWS_LAMBDA_JS_RUNTIME = "nodejs14.x"
