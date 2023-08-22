@@ -3,6 +3,12 @@
   "version": "1.0.0",
   "description": "Get the grades, name of the class and averages from UNAH registration page",
   "main": "index.js",
+  "engines": {
+    "node": "14.x"
+  },
+  "AWS_LAMBDA_JS_RUNTIME": {
+    "node": "14.x"
+  },
   "scripts": {
     "build": "netlify deploy --prod"
   },
