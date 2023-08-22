@@ -1,6 +1,6 @@
 const express = require('express');
 const serverless = require('serverless-http');
-const chrome = require('chrome-aws-lambda');
+const puppeteer = require('puppeteer');
 const app = express();
 const router = express.Router();
 
@@ -15,13 +15,7 @@ router.get('/', (req, res) => {
 
 router.get('/test', async (req, res) => {
     if (browser === null) {
-        browser = await chrome.puppeteer.launch({
-            args: [...chrome.args, "--hide-scrollbars", "--disable-web-security"],
-            defaultViewport: chrome.defaultViewport,
-            executablePath: await chrome.executablePath,
-            headless: true,
-            ignoreHTTPSErrors: true,
-        });
+        const browser = await puppeteer.launch();
     }
     //go to login page
     page = await browser.newPage();
