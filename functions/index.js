@@ -1,50 +1,43 @@
 const express = require('express');
 const serverless = require('serverless-http');
+const chrome = require('chrome-aws-lambda');
 const app = express();
 const router = express.Router();
 
-let records = [];
+let browser = null;
+let page = null;
+let pages = 0;
+
+browser = await chrome.puppeteer.launch({
+    args: [...chrome.args, "--hide-scrollbars", "--disable-web-security"],
+    defaultViewport: chrome.defaultViewport,
+    executablePath: await chrome.executablePath,
+    headless: true,
+    ignoreHTTPSErrors: true,
+});
 
 //Get all students
 router.get('/', (req, res) => {
   res.send('App is running..');
 });
 
-//Create new record
-router.post('/add', (req, res) => {
-  res.send('New record added.');
-});
+router.get('/test', async (req, res) => {
+    if (browser === null) {
+        browser = await chrome.puppeteer.launch({
+            args: [...chrome.args, "--hide-scrollbars", "--disable-web-security"],
+            defaultViewport: chrome.defaultViewport,
+            executablePath: await chrome.executablePath,
+            headless: true,
+            ignoreHTTPSErrors: true,
+        });
+    }
+    //go to login page
+    page = await browser.newPage();
+    await page.goto('https://registro.unah.edu.hn/pregra_estu_login.aspx', {waitUntil: 'domcontentloaded'});
+    res.send(await page.content())
+  });
+  
+  
 
-//delete existing record
-router.delete('/', (req, res) => {
-  res.send('Deleted existing record');
-});
-
-//updating existing record
-router.put('/', (req, res) => {
-  res.send('Updating existing record');
-});
-
-//showing demo records
-router.get('/demo', (req, res) => {
-  res.json([
-    {
-      id: '001',
-      name: 'Smith',
-      email: 'smith@gmail.com',
-    },
-    {
-      id: '002',
-      name: 'Sam',
-      email: 'sam@gmail.com',
-    },
-    {
-      id: '003',
-      name: 'lily',
-      email: 'lily@gmail.com',
-    },
-  ]);
-});
-
-app.use('/.netlify/functions/index', router);
+app.use('/api', router);
 module.exports.handler = serverless(app);
