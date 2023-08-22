@@ -6,3 +6,9 @@
   to= "/dist/*"
   status = 200
   force = true
+
+[[redirects]]
+  from = "/api/*"
+  to= "/.netlify/functions/index/"
+  status = 200
+  force = true

@@ -31,5 +31,5 @@ router.get('/test', async (req, res) => {
   
   
 
-app.use('/api', router);
+app.use('/.netlify/functions/index', router);
 module.exports.handler = serverless(app);
