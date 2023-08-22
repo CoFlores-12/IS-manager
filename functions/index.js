@@ -1,8 +1,8 @@
 const express = require('express');
 const app = express();
-const database = require('./modules/database');
+const database = require('../modules/database');
 const chrome = require('chrome-aws-lambda');
-const db = require('./routes/db')
+const db = require('../routes/db')
 const cookieParser = require("cookie-parser");
 const sessions = require('express-session');
 

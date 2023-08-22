@@ -6,10 +6,10 @@
   },
   
   "description": "Get the grades, name of the class and averages from UNAH registration page",
-  "main": "index.js",
+  "main": "functions/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "start": "node functions/index.js"
   },
   "repository": {
     "type": "git",
