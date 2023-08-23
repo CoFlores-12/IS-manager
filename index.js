@@ -54,7 +54,7 @@ async function login1(req,res,next){
 async function login2(req,res,next){
   console.time("login2");
      page.type('#MainContent_txt_clave', req.body['clave']);
-     console.timeEnd("login3");
+     console.timeEnd("login2");
      await next();
 }
 
