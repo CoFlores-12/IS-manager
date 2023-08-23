@@ -39,7 +39,7 @@ async function openRegister(req,res,next){
 async function login(req,res,next){
   console.time("login");
     //login with credentials 
-     page.type('#MainContent_txt_cuenta', req.body['cuenta']);
+     await page.type('#MainContent_txt_cuenta', req.body['cuenta']);
      console.timeEnd("login");
      await next();
 }
