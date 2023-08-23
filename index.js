@@ -62,6 +62,8 @@ async function login3(req,res,next){
   console.time("login3");
     try {
       await page.waitForSelector('#MainContent_LinkButton2');
+
+    await page.click('#MainContent_LinkButton2');
       console.timeEnd("login3");
       await next();
     } catch (error) {
@@ -72,7 +74,6 @@ async function login3(req,res,next){
 
 async function pageNumber(req,res,next){
   console.time("number");
-    await page.click('#MainContent_LinkButton2');
   
     await page.waitForSelector('#MainContent_ASPxPageControl1_ASPxGridView2_DXMainTable');
   
@@ -85,46 +86,50 @@ async function pageNumber(req,res,next){
     console.timeEnd("number");
     await next();
 }
+let classRes = {
+  "classes": [],
+  "INFO": {}
+};
+async function register1(req,res,next){
+  console.time("preregister");
+  classRes = {
+    "classes": [],
+    "INFO": {}
+  };
+  for (let i = 0; i < pages; i++) {
+    responseClass = await page.evaluate(() => { 
+      const  clases = [];
+      //get all elements of class table
+      const elements = document.querySelectorAll('#MainContent_ASPxPageControl1_ASPxGridView2_DXMainTable tbody tr');
 
-app.post('/api/register', openRegister, login, login1,login2,login3, pageNumber, async function (req, res) {
-  console.time("register");
-    //JSON response
-    const classRes = {
-      "classes": [],
-      "INFO": {}
-    };
-  
-    for (let i = 0; i < pages; i++) {
-      responseClass = await page.evaluate(() => { 
-        const  clases = [];
-        //get all elements of class table
-        const elements = document.querySelectorAll('#MainContent_ASPxPageControl1_ASPxGridView2_DXMainTable tbody tr');
-  
-        for (let index = 9; index<elements.length; index++){
-          clases.push({
-              'CODIGO': elements[index].getElementsByTagName('td')[0].innerHTML,
-              'ASIGNATURA': elements[index].getElementsByTagName('td')[1].innerHTML,
-              'UV': elements[index].getElementsByTagName('td')[2].innerHTML,
-              'SECCION': elements[index].getElementsByTagName('td')[3].innerHTML,
-              'ANIO': elements[index].getElementsByTagName('td')[4].innerHTML,
-              'PERIODO': elements[index].getElementsByTagName('td')[5].innerHTML,
-              'CALIFICACION': elements[index].getElementsByTagName('td')[6].innerHTML,
-              'OBS': elements[index].getElementsByTagName('td')[7].innerHTML
-            });
-        }
-        return clases;
-      });
-      responseClass.forEach(clas => {
-        classRes.classes.push(clas);
-      });
-    //next page in history
-    await page.evaluate(() => {
-      aspxGVPagerOnClick("MainContent_ASPxPageControl1_ASPxGridView2","PBN");
+      for (let index = 9; index<elements.length; index++){
+        clases.push({
+            'CODIGO': elements[index].getElementsByTagName('td')[0].innerHTML,
+            'ASIGNATURA': elements[index].getElementsByTagName('td')[1].innerHTML,
+            'UV': elements[index].getElementsByTagName('td')[2].innerHTML,
+            'SECCION': elements[index].getElementsByTagName('td')[3].innerHTML,
+            'ANIO': elements[index].getElementsByTagName('td')[4].innerHTML,
+            'PERIODO': elements[index].getElementsByTagName('td')[5].innerHTML,
+            'CALIFICACION': elements[index].getElementsByTagName('td')[6].innerHTML,
+            'OBS': elements[index].getElementsByTagName('td')[7].innerHTML
+          });
+      }
+      return clases;
     });
-    await page.waitForTimeout(600);
-  }
-  
-  console.timeEnd("register");
+    responseClass.forEach(clas => {
+      classRes.classes.push(clas);
+    });
+  //next page in history
+  await page.evaluate(() => {
+    aspxGVPagerOnClick("MainContent_ASPxPageControl1_ASPxGridView2","PBN");
+  });
+  await page.waitForTimeout(600);
+}
+    console.timeEnd("preregister");
+    await next();
+}
+app.post('/api/register', openRegister, login, login1,login2,login3, pageNumber, register1, async function (req, res) {
+
   console.time("register1");
     //get averanges
     const promedio = await page.evaluate(() => {

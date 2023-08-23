@@ -28,12 +28,16 @@ if ("serviceWorker" in navigator) {
     $.post(`/api/db/${data.INFO.Carrera}`, {})
       .done(function (response) {
         localStorage.setItem('career', JSON.stringify(response))
+        init()
       }).fail(function(xhr, status, res) {
         functions = false;
+
         
       })
+    }else{
+      init()
     }
-  init()
+  
   $('#graph').on('change', function() {
     loadGraph();
     $('#myChartHistoryG').css('display','none')
