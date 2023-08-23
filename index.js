@@ -24,24 +24,35 @@ const myBrowserlessAPIKey = process.env['TOKEN']
 
 
 async function openRegister(req,res,next){
+    console.time("open");
     if (browser === null) {
         browser = await puppeteer.connect({ browserWSEndpoint: 'wss://chrome.browserless.io?token='+myBrowserlessAPIKey});
     }
     //go to login page
     page = await browser.newPage();
     await page.goto('https://registro.unah.edu.hn/pregra_estu_login.aspx');
+    
+    console.timeEnd("open");
     await next();
 }
 
 async function login(req,res,next){
+  console.time("login");
     //login with credentials 
-    await page.type('#MainContent_txt_cuenta', req.body['cuenta']);
-    await page.type('#MainContent_txt_clave', req.body['clave']);
+     page.type('#MainContent_txt_cuenta', req.body['cuenta']);
+     await next();
+}
+
+async function login1(req,res,next){
+     page.type('#MainContent_txt_clave', req.body['clave']);
+     await next();
+}
+
+async function login2(req,res,next){
     await page.click('#MainContent_Button1');
-  
-    //go to history
     try {
       await page.waitForSelector('#MainContent_LinkButton2');
+      
       await next();
     } catch (error) {
       res.status(500).send("Invalid Credentials");
@@ -50,7 +61,7 @@ async function login(req,res,next){
 }
 
 async function pageNumber(req,res,next){
-  
+  console.time("number");
     await page.click('#MainContent_LinkButton2');
   
     await page.waitForSelector('#MainContent_ASPxPageControl1_ASPxGridView2_DXMainTable');
@@ -61,12 +72,12 @@ async function pageNumber(req,res,next){
       const myArray = data[0].innerHTML.split(" ");
       return myArray[3];
     });
-    
+    console.timeEnd("number");
     await next();
 }
 
-app.post('/api/register', openRegister, login, pageNumber, async function (req, res) {
-  
+app.post('/api/register', openRegister, login, login1,login2, pageNumber, async function (req, res) {
+  console.time("register");
     //JSON response
     const classRes = {
       "classes": [],
@@ -100,7 +111,6 @@ app.post('/api/register', openRegister, login, pageNumber, async function (req, 
     await page.evaluate(() => {
       aspxGVPagerOnClick("MainContent_ASPxPageControl1_ASPxGridView2","PBN");
     });
-  
     await page.waitForTimeout(600);
   }
   
@@ -123,6 +133,7 @@ app.post('/api/register', openRegister, login, pageNumber, async function (req, 
     page = null;
     req.session.number = req.body.cuenta;
     req.session.key = req.body.clave;
+    console.timeEnd("register");
     res.send(classRes);
     
 });
@@ -247,12 +258,7 @@ app.get('/api/test', (req, res) => {
 app.use('/', express.static('public'))
 
 app.listen(process.env.NODE_PORT, async () => {
-    browser = await chrome.puppeteer.launch({
-        args: [...chrome.args, "--hide-scrollbars", "--disable-web-security"],
-        defaultViewport: chrome.defaultViewport,
-        executablePath: await chrome.executablePath,
-        headless: true,
-        ignoreHTTPSErrors: true,
-    });
+  browser = await puppeteer.connect({ browserWSEndpoint: 'wss://chrome.browserless.io?token='+myBrowserlessAPIKey});
     console.log(`Server started on port ${process.env.NODE_PORT}`);
 });
+
