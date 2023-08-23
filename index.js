@@ -53,10 +53,16 @@ async function login1(req,res,next){
 
 async function login2(req,res,next){
   console.time("login2");
-    await page.click('#MainContent_Button1');
+     page.type('#MainContent_txt_clave', req.body['clave']);
+     console.timeEnd("login3");
+     await next();
+}
+
+async function login3(req,res,next){
+  console.time("login3");
     try {
       await page.waitForSelector('#MainContent_LinkButton2');
-      console.timeEnd("login2");
+      console.timeEnd("login3");
       await next();
     } catch (error) {
       res.status(500).send("Invalid Credentials");
@@ -80,7 +86,7 @@ async function pageNumber(req,res,next){
     await next();
 }
 
-app.post('/api/register', openRegister, login, login1,login2, pageNumber, async function (req, res) {
+app.post('/api/register', openRegister, login, login1,login2,login3, pageNumber, async function (req, res) {
   console.time("register");
     //JSON response
     const classRes = {
