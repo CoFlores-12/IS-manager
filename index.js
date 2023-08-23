@@ -71,9 +71,15 @@ async function login3(req,res,next){
       return;
     }
 }
+function sleep(ms) {
+
+return new Promise((resolve) => setInterval(resolve, ms));
+
+}
 async function prenumber(req,res,next){
   console.time("prenumber");
-  await page.waitForSelector('#MainContent_ASPxPageControl1_ASPxGridView2_DXMainTable');
+    await sleep(5000);
+  //await page.waitForSelector('#MainContent_ASPxPageControl1_ASPxGridView2_DXMainTable');
      console.timeEnd("prenumber");
      await next();
 }
