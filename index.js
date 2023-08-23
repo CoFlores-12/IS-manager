@@ -124,7 +124,8 @@ app.post('/api/register', openRegister, login, login1,login2,login3, pageNumber,
     await page.waitForTimeout(600);
   }
   
-  
+  console.timeEnd("register");
+  console.time("register1");
     //get averanges
     const promedio = await page.evaluate(() => {
       const obj = {
@@ -137,13 +138,15 @@ app.post('/api/register', openRegister, login, login1,login2,login3, pageNumber,
       };
       return obj;
     });
+    console.timeEnd("register1");
+    console.time("register2");
     classRes.INFO=promedio;
   
     await page.close();
     page = null;
     req.session.number = req.body.cuenta;
     req.session.key = req.body.clave;
-    console.timeEnd("register");
+    console.timeEnd("register2");
     res.send(classRes);
     
 });
