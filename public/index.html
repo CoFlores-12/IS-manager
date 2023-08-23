@@ -167,7 +167,7 @@
 
     <script>
         function login() {
-            
+            $('.modal').css('visibility','visible');
 $.post(`/api/refresh1`, {})
   .done(function (response) {
     $.post(`/api/register`, {
