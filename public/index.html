@@ -170,7 +170,10 @@
             
 $.post(`/api/refresh1`, {})
   .done(function (response) {
-    $.post(`/api/register`, {})
+    $.post(`/api/register`, {
+                "cuenta":$('#numberInput').val(),
+                "clave":$('#passInput').val()
+    })
     .done(function (response) {
       $.post(`/api/refresh3`, {})
       .done(function (response) {
