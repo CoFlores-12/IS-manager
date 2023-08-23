@@ -22,7 +22,7 @@ let page = null;
 let pages = 0;
 const myBrowserlessAPIKey = process.env['TOKEN']
 
-app.post('/api/register', openRegister, login, login1,login2,login3,prenumber, pageNumber, register1, async function (req, res) {
+app.post('/api/register', async function (req, res) {
 
   await page.type('#MainContent_txt_cuenta', req.body['cuenta']);
   await page.type('#MainContent_txt_clave', req.body['clave']);
