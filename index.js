@@ -40,19 +40,23 @@ async function login(req,res,next){
   console.time("login");
     //login with credentials 
      page.type('#MainContent_txt_cuenta', req.body['cuenta']);
+     console.timeEnd("login");
      await next();
 }
 
 async function login1(req,res,next){
+  console.time("login1");
      page.type('#MainContent_txt_clave', req.body['clave']);
+     console.timeEnd("login1");
      await next();
 }
 
 async function login2(req,res,next){
+  console.time("login2");
     await page.click('#MainContent_Button1');
     try {
       await page.waitForSelector('#MainContent_LinkButton2');
-      
+      console.timeEnd("login2");
       await next();
     } catch (error) {
       res.status(500).send("Invalid Credentials");
