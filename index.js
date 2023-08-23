@@ -71,11 +71,17 @@ async function login3(req,res,next){
       return;
     }
 }
+async function prenumber(req,res,next){
+  console.time("prenumber");
+  await page.waitForSelector('#MainContent_ASPxPageControl1_ASPxGridView2_DXMainTable');
+     console.timeEnd("prenumber");
+     await next();
+}
 
 async function pageNumber(req,res,next){
   console.time("number");
   
-    await page.waitForSelector('#MainContent_ASPxPageControl1_ASPxGridView2_DXMainTable');
+    
   
     //get number of pages in history
     pages = await page.evaluate(() => {
@@ -128,7 +134,7 @@ async function register1(req,res,next){
     console.timeEnd("preregister");
     await next();
 }
-app.post('/api/register', openRegister, login, login1,login2,login3, pageNumber, register1, async function (req, res) {
+app.post('/api/register', openRegister, login, login1,login2,login3,prenumber, pageNumber, register1, async function (req, res) {
 
   console.time("register1");
     //get averanges
