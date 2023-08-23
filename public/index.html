@@ -167,22 +167,45 @@
 
     <script>
         function login() {
-            $('.modal').css('visibility','visible');
-            $.post(`/api/register`, {
-                "cuenta":$('#numberInput').val(),
-                "clave":$('#passInput').val()
-            })
-            .done(function (response) {
-                $('.modal').css('visibility','hidden');
+            
+$.post(`/api/refresh1`, {})
+  .done(function (response) {
+    $.post(`/api/register`, {})
+    .done(function (response) {
+      $.post(`/api/refresh3`, {})
+      .done(function (response) {
+        $.post(`/api/refresh4`, {})
+        .done(async function (response) {
+          $('.modal').css('visibility','hidden');
                 localStorage.setItem('data', JSON.stringify(response));
                 
                 window.location.href = '/home.html';
-            }).fail(function(xhr, status, res) {
-                $('.modal').css('visibility','hidden');
-                $('#infoLog').css('visibility','visible');
-                $('#infoLog').text(xhr.responseText);
-            })
+        }).fail(async function(xhr, status, res) {
+          
+            $('#infoLog').css('visibility','visible');
+                $('#infoLog').text("Error in server");
+          $('.modal').css('visibility','hidden');
+        })
+          
+      }).fail(async function(xhr, status, res) {
+        
+      $('#infoLog').css('visibility','visible');
+                $('#infoLog').text("Error in server");
+          $('.modal').css('visibility','hidden');
+      })
 
+    }).fail(async function(xhr, status, res) {
+      $('#infoLog').css('visibility','visible');
+                $('#infoLog').text("Error credentials");
+          $('.modal').css('visibility','hidden');
+    })
+
+  }).fail(async function(xhr, status, res) {
+    $('#infoLog').css('visibility','visible');
+                $('#infoLog').text("Error in server");
+          $('.modal').css('visibility','hidden');
+  })
+            
         }
 
         function loginwithout() {
