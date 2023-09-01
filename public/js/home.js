@@ -241,7 +241,13 @@ function viewSN(nameScreen) {
   periodsCLH = [];
 
   data.classes.reverse().forEach(element => {
-    if ((element.ANIO != '2020' || element.ANIO != '2021' || element.ANIO != '2022') && element.CALIFICACION*1>64) {
+    let band = true;
+    if(element.ANIO == '2020' || element.ANIO == '2021' || (element.ANIO == '2022' && element.PERIODO.trim() != "3") ){
+      if(element.CALIFICACION*1<65){
+        band = false;
+      }
+    }
+    if(band){
       allUV += 1*element.UV;
       allScores += (element.UV*element.CALIFICACION);
     }
