@@ -242,7 +242,7 @@ function viewSN(nameScreen) {
 
   data.classes.reverse().forEach(element => {
     let band = true;
-    if(element.ANIO == '2020' || element.ANIO == '2021' || (element.ANIO == '2022' && (element.PERIODO.trim() == "1") ){
+    if(element.ANIO == '2020' || element.ANIO == '2021' || (element.ANIO == '2022' && element.PERIODO.trim() == "1") ){
       if(element.CALIFICACION*1<65){
         band = false;
       }
