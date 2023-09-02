@@ -247,7 +247,7 @@ function viewSN(nameScreen) {
         band = false;
       }
     }
-    if(band){
+    if(band && element.OBS.trim() != "NSP"){
       allUV += 1*element.UV;
       allScores += (element.UV*element.CALIFICACION);
     }
