@@ -10,10 +10,11 @@ functions = true;
 
 history.pushState(null, null, location.href);
 window.onpopstate = function () {
+  if (viewActive != '') {
+    back(viewActive);
+    viewActive = '';
+  }
     history.go(1);
-    if (viewActive != '') {
-      back();
-    }
 };
 //install SW
 if ("serviceWorker" in navigator) {
