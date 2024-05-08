@@ -8,6 +8,13 @@ graph3 = null;
 graph4 = null;
 functions = true;
 
+history.pushState(null, null, location.href);
+window.onpopstate = function () {
+    history.go(1);
+    if (viewActive != '') {
+      back();
+    }
+};
 //install SW
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", function() {
@@ -65,6 +72,13 @@ function init() {
 
 
   optativasRM = [];
+  optativasPast = [];
+  for (let i = 0; i < career.optativas.length; i++) {
+    optativa = past.find(elm => elm.CODIGO.trim() === career.optativas[i].codigo.trim())
+    if (optativa != undefined) {
+      optativasPast.push(career.optativas[i])
+    }
+  }
 
   remaining = career.classes.filter(function(element){
     if (element.codigo.trim() === "Electiva") {
@@ -80,15 +94,12 @@ function init() {
       element.classes = electivasJSON;
     }
     if (element.codigo.trim() === "optativa") {
-      optativasJSON = [];
-      for (let i = 0; i < career.optativas.length; i++) {
-        optativasJSON.push(career.optativas[i]);
-        optativa = past.find(elm => elm.CODIGO.trim() === career.optativas[i].codigo.trim())
-        if (optativa != undefined) {
-          return false;
-        }
+      if(optativasPast.length > 0) {
+        optativasPast.pop(0);
+        return false;
+      }else{
+        optativasRM.push(element)
       }
-      element.classesRM = optativasJSON;
     }
     isPast = past.find(elm => elm.CODIGO.trim() === element.codigo.trim())
     return isPast === undefined
@@ -131,8 +142,11 @@ function init() {
     });
     return counter===3;
   });
+
+  const porcentCarreer = (1-((remaining.length)/(career.classes.length)))*100
   
-  
+  document.getElementById('porcentCarreer').innerHTML = porcentCarreer.toFixed(2) + '%'
+
   const ctx = document.getElementById('myChart');
     new Chart(ctx, {
       type: 'doughnut',
@@ -187,7 +201,8 @@ function viewHistory(nameScreen) {
   loadGraph();
   $('#bodyHistoryClassesTable').html('')
   periodsCLH = [];
-  data.classes.reverse().forEach(element => {
+  var dataTemp =  data.classes.reverse();
+  dataTemp.forEach(element => {
     if (!(periodsCLH.includes(element.PERIODO.trim() + ' PAC ' + element.ANIO.trim()))){
       periodsCLH.push((element.PERIODO.trim() + ' PAC ' + element.ANIO.trim()))
       $('#bodyHistoryClassesTable').append(`
@@ -196,7 +211,7 @@ function viewHistory(nameScreen) {
       </tr>`)
     }
     $('#bodyHistoryClassesTable').append(`
-      <tr>
+      <tr id="${element.OBS}">
         <td>${element.CODIGO.trim()}</td>
         <td>${element.ASIGNATURA}</td>
         <td>${element.UV}</td>
@@ -335,7 +350,7 @@ function viewRemaining(nameScreen) {
     if (element.codigo.trim() === "optativa" || element.codigo.trim() === "Electiva") {
       ELMClasses = element.classes;
       if (element.codigo.trim() === "optativa") {
-        ELMClasses = element.classesRM;
+        ELMClasses = optativasRM;
       }
       dt = ``;
       ELMClasses.forEach(cls => {

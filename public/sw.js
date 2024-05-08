@@ -9,7 +9,8 @@ const assets = [
     "https://is-manager.vercel.app/css/style.css",
     "https://is-manager.vercel.app/css/animate.min.css",
     "https://is-manager.vercel.app/logo.png",
-    "https://is-manager.vercel.app/Spinner-1s-200px.svg"
+    "https://is-manager.vercel.app/Spinner-1s-200px.svg",
+    "https://is-manager.vercel.app/organigrama/INGENIERIA EN SISTEMAS.svg"
 ];
 
 self.addEventListener("install", installEvent => {
