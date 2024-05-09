@@ -1043,13 +1043,28 @@
         if (ratingInp.value == null) {
             return
         }
-        console.log(classSelectedData);
+        
+        let periodo = 0
+        let maxYear = new Date().getFullYear();
+        const classesInMaxYear = data.classes.filter(entry => entry.ANIO === ""+maxYear);
+        if (classesInMaxYear.length == 0)  {
+            periodo = 1;
+        }else{
+            const periodsInMaxYear = classesInMaxYear.map(entry => parseInt(entry.PERIODO));
+            console.log(periodsInMaxYear);
+            periodo = Math.max(...periodsInMaxYear);
+            if (periodo == 3) {
+                maxYear = new Date(new Date().setFullYear(new Date().getFullYear() + 1)).getFullYear();
+                periodo = 1;
+            }
+        }
+
         const newClass = {
             "CODIGO":classSelectedData.codigo,
             "ASIGNATURA":classSelectedData.nombre,
             "UV": `${classSelectedData.uv}`,
-            "ANIO": `${new Date().getFullYear()}`,
-            "PERIODO":"ADD MANUALLY",
+            "ANIO": `${maxYear}`,
+            "PERIODO":`${periodo}`,
             "CALIFICACION":ratingInp.value,
             "OBS":obsInp.value
         };
