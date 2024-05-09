@@ -184,6 +184,10 @@ function init() {
 }
 
 function viewScreen(nameScreen) {
+  if (nameScreen === 'manual') {
+    location.href = '/add.html'
+    return
+  }
   viewActive=nameScreen;
   $('#'+nameScreen).css('display', 'block');
 
