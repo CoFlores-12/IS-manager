@@ -108,10 +108,10 @@
                   </div>
                   <div class="mb-6">
                      <input
-                     id="uv"
+                     id="info"
                         type="text"
                         readonly
-                        placeholder="UV"
+                        placeholder="INFO"
                         class="
                         w-full
                         rounded
@@ -1006,26 +1006,27 @@
     const classSelected = document.getElementById('classSelected');
     const btnSave = document.getElementById('btnSave');
     const ratingInp = document.getElementById('ratingInp');
-    const uv = document.getElementById('uv');
+    const info = document.getElementById('info');
     const obsInp = document.getElementById('obsInp');
     let classSelectedData = '';
     remaining.forEach(element => {
         datalistCRM.innerHTML += `<option value="${element.codigo.trim()}">${element.nombre.trim()}</option>`
     });
     classSelected.addEventListener('change', function(e){
-         classSelectedData = remaining.find(elm => elm.codigo.trim() === e.target.value.trim());
+        classSelectedData = remaining.find(elm => elm.codigo.trim().toUpperCase() === e.target.value.trim().toUpperCase());
+        console.log(classSelectedData);
         if (classSelectedData == undefined) {
             classSelected.value = ''
             btnSave.classList.add('hidden')
             ratingInp.classList.add('hidden')
-            uv.classList.add('hidden')
+            info.classList.add('hidden')
             obsInp.classList.add('hidden')
             return;
         }
-        uv.value = classSelectedData.uv + ' UV';
+        info.value = classSelectedData.nombre + ' - ' + classSelectedData.uv+'UV';
         btnSave.classList.remove('hidden')
         ratingInp.classList.remove('hidden')
-        uv.classList.remove('hidden')
+        info.classList.remove('hidden')
     })
     ratingInp.addEventListener('keyup', function(e){
         const rating = parseInt(e.target.value);
