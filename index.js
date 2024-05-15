@@ -5,6 +5,7 @@ const puppeteer = require('puppeteer-core');
 const db = require('./routes/db')
 const cookieParser = require("cookie-parser");
 const sessions = require('express-session');
+const cors = require('cors');
 
 require('dotenv').config()
 app.use(sessions({
@@ -15,7 +16,12 @@ app.use(sessions({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+var corsOptions = {
+  origin: 'https://is-manager-astro.vercel.app/',
+  optionsSuccessStatus: 200 // For legacy browser support
+}
 
+app.use(cors(corsOptions));
 
 let browser = null;
 let page = null;
@@ -38,7 +44,7 @@ app.post('/api/register', async function (req, res) {
     return;
   }
 
-  res.send("ready");
+  res.send('{"status":"ready"}');
 });
 
 app.post('/api/refresh1', async function (req, res) {
@@ -48,7 +54,7 @@ app.post('/api/refresh1', async function (req, res) {
   //go to login page
   page = await browser.newPage();
   await page.goto('https://registro.unah.edu.hn/pregra_estu_login.aspx');
-  res.send("ready");
+  res.send('{"status":"ready"}');
     
 });
 
@@ -72,7 +78,7 @@ app.post('/api/refresh2', async function (req, res) {
     return;
   }
 
-  res.send("ready");
+  res.send('{"status":"ready"}');
     
 });
 
