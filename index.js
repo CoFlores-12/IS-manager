@@ -18,6 +18,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 var corsOptions = {
   origin: 'https://is-manager-astro.vercel.app',
+  credentials:true,  
   optionsSuccessStatus: 200 // For legacy browser support
 }
 
