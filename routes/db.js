@@ -3,7 +3,12 @@ const app        = express()
 const career = require('../models/careers')
 
 const cors       = require('cors')
-app.use(cors())
+const corsOptions = {
+    origin: 'https://is-manager-astro.vercel.app',
+    optionsSuccessStatus: 200,
+    credentials: true,
+  };
+  app.use(cors(corsOptions));
 
 app.post('/:nameCareer', async (req, res)=>{
     const careerRes = await career.find({'name': req.params.nameCareer})
