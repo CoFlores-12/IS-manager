@@ -134,6 +134,18 @@
             align-items: center;
             padding: 20px;
         }
+        .flex {
+            display: flex;
+        }
+        .row {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            width: 100%;
+        }
+        .col:nth-child(1) > button{ 
+            background-color: red;
+        }
     </style>
 
 </head>
@@ -142,6 +154,15 @@
         <div class="card">
             <img src="Spinner-1s-200px.svg" alt="" width="80%">
             <h3>please wait</h3>
+        </div>
+    </div>
+    <div class="modal" id="newVersionModal">
+        <div class="card">
+            <h3>Would you like to try the new version?</h3>
+            <div class="row">
+                <div class="col"><button onclick="noNV()">Cancel</button></div>
+                <div class="col"><button onclick="nV()">Try</button></div>
+            </div>
         </div>
     </div>
     <div class="header">
@@ -165,6 +186,16 @@
     </main>
 
     <script>
+        function noNV() {
+          localStorage.setItem('NV', 'noNV');
+          $('#newVersionModal').css('visibility','hidden');
+        }
+        function nV() {
+            location.href = 'https://is-manager-astro.vercel.app/'
+        }
+        if (localStorage.getItem('NV') === null) {
+            $('#newVersionModal').css('visibility','visible');
+        }
         function login() {
             $('.modal').css('visibility','visible');
 $.post(`/api/refresh1`, {})
