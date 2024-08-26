@@ -27,16 +27,7 @@ if ("serviceWorker" in navigator) {
 }
 
 (async ()=>{
-  function noNV() {
-    localStorage.setItem('NV', 'noNV');
-    $('#newVersionModal').css('visibility','hidden');
-  }
-  function nV() {
-      location.href = 'https://is-manager-astro.vercel.app/'
-  }
-  if (localStorage.getItem('NV') === null) {
-    $('#newVersionModal').css('visibility','visible');
-}
+  
   $('.name').text(data.INFO.Nombre)
   $('.career').text(data.INFO.Carrera)
   $('#globalP').text(data.INFO.Indice.global + '%')

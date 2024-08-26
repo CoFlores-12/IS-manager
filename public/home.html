@@ -7,6 +7,16 @@
       window.location.href = '/';
     }
     data=JSON.parse(localStorage.getItem('data'));
+    function noNV() {
+    localStorage.setItem('NV', 'noNV');
+    $('#newVersionModal').css('visibility','hidden');
+  }
+  function nV() {
+      location.href = 'https://is-manager-astro.vercel.app/'
+  }
+  if (localStorage.getItem('NV') === null) {
+    $('#newVersionModal').css('visibility','visible');
+}
   </script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
