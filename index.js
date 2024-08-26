@@ -16,7 +16,11 @@ app.use(sessions({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(cors());
+const corsOptions = {
+  origin: 'https://is-manager-astro.vercel.app',
+  credentials: true,
+};
+app.use(cors(corsOptions));
 
 let browser = null;
 let page = null;
