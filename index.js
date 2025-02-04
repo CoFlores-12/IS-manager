@@ -226,7 +226,7 @@ app.get('/api/getPageData', async (req, res) => {
   await page.waitForSelector('#MainContent_GridView1 tbody tr:not(.GridPager)', { timeout: 5000 }).catch(() => null);
 
   const pageData = await page.evaluate(() => {
-    const rows = document.querySelectorAll('#MainContent_GridView1 tbody tr:not(.GridPager)');
+    const rows = document.querySelectorAll('#MainContent_GridView1 > tbody > tr:not(.GridPager)');
     let data = [];
 
     rows.forEach((row, index) => {
