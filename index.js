@@ -249,15 +249,11 @@ app.get('/api/getPageData', async (req, res) => {
 
     return data;
   });
-  if (pageNum < pages) {
+  if (pageIndex < pages) {
     await page.evaluate((pageNum) => {
       const nextPageLink = document.querySelector(`#MainContent_GridView1 tbody tr.GridPager td table tbody tr td:nth-child(${pageNum}) a`);
       if (nextPageLink) nextPageLink.click();
-    }, pageNum + 1);
-
-    // Esperar que cargue la nueva página
-    await page.waitForNavigation({ waitUntil: 'domcontentloaded' }).catch(() => null);
-    await page.waitForSelector('#MainContent_GridView1 tbody tr:not(.GridPager)', { timeout: 5000 }).catch(() => null);
+    }, pageIndex + 1);
   }
 
   res.json({ page: pageIndex, data: pageData });
