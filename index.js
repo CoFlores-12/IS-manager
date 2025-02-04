@@ -106,7 +106,7 @@ app.post('/api/refresh4', async function (req, res) {
       "INFO": {}
     };
   
-    for (let i = 1; i <= totalPages; i++) {
+    for (let i = 1; i <= pages; i++) {
   
       const pageData = await page.evaluate(() => {
         const rows = document.querySelectorAll('#MainContent_GridView1 tbody tr:not(.GridPager)');
@@ -134,7 +134,7 @@ app.post('/api/refresh4', async function (req, res) {
       classRes.classes = classRes.classes.concat(pageData);
   
       // Ir a la siguiente página si no es la última
-      if (i < totalPages) {
+      if (i < pages) {
         await page.evaluate((pageNum) => {
           const nextPageLink = document.querySelector(`#MainContent_GridView1 tbody tr.GridPager td table tbody tr td a:nth-child(${pageNum})`);
           if (nextPageLink) nextPageLink.click();
