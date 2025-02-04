@@ -100,6 +100,31 @@ app.post('/api/refresh3', async function (req, res) {
     
 });
 
+app.get('/api/getUserInfo', async (req, res) => {
+  await page.waitForSelector('#MainContent_Label1', { timeout: 5000 }).catch(() => null);
+
+  const userInfo = await page.evaluate(() => {
+    const getText = (selector) => {
+      const el = document.querySelector(selector);
+      return el ? el.textContent.trim() : "N/A";
+    };
+
+    return {
+      "Cuenta": getText('#MainContent_Label1'),
+      "Centro": getText('#MainContent_Label4'),
+      "Nombre": getText('#MainContent_Label2'),
+      "Carrera": getText('#MainContent_Label3'),
+      "Indice": {
+        "global": getText('#MainContent_Label6'),
+        "periodo": getText('#MainContent_Label5')
+      }
+    };
+  });
+
+  res.json(userInfo);
+});
+
+
 app.post('/api/refresh4', async function (req, res) {
   const classRes = {
     "classes": [],
