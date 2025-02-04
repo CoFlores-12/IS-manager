@@ -25,6 +25,7 @@ app.use(cors(corsOptions));
 let browser = null;
 let page = null;
 let pages = 0;
+let currentPage = 0;
 const myBrowserlessAPIKey = process.env['TOKEN']
 
 app.post('/api/register', async function (req, res) {
@@ -93,6 +94,7 @@ app.post('/api/refresh3', async function (req, res) {
     const pagerLinks = document.querySelectorAll('#MainContent_GridView1 tbody tr.GridPager td table tbody tr td a');
     return pagerLinks.length + 1;
   });
+  currentPage = 0;
   
   res.send("ready");
     
@@ -176,6 +178,79 @@ app.post('/api/refresh4', async function (req, res) {
   page = null;
 
   res.json(classRes);
+});
+
+app.get('/api/getPageData', async (req, res) => {
+
+  const pageIndex = currentPage;
+
+  await page.waitForSelector('#MainContent_GridView1 tbody tr:not(.GridPager)', { timeout: 5000 }).catch(() => null);
+
+  const pageData = await page.evaluate(() => {
+    const rows = document.querySelectorAll('#MainContent_GridView1 tbody tr:not(.GridPager)');
+    let data = [];
+
+    rows.forEach((row, index) => {
+      if (index === 0) return; // Omitir encabezado
+      const cols = row.querySelectorAll('td');
+
+      if (cols.length > 0) {
+        data.push({
+          CODIGO: cols[0]?.textContent?.trim() || "N/A",
+          ASIGNATURA: cols[1]?.textContent?.trim() || "N/A",
+          UV: cols[2]?.textContent?.trim() || "N/A",
+          SECCION: cols[3]?.textContent?.trim() || "N/A",
+          ANIO: cols[4]?.textContent?.trim() || "N/A",
+          PERIODO: cols[5]?.textContent?.trim() || "N/A",
+          CALIFICACION: cols[6]?.textContent?.trim() || "N/A",
+          OBS: cols[7]?.textContent?.trim() || "N/A",
+        });
+      }
+    });
+
+    
+
+    return data;
+  });
+
+  if (currentPage < pages) {
+    await page.evaluate((pageNum) => {
+      const nextPageLink = document.querySelector(`#MainContent_GridView1 tbody tr.GridPager td table tbody tr td a:nth-child(${pageNum})`);
+      if (nextPageLink) nextPageLink.click();
+    }, currentPage + 1);
+
+    // Esperar que cargue la nueva página
+    await page.waitForNavigation({ waitUntil: 'domcontentloaded' }).catch(() => null);
+    await page.waitForSelector('#MainContent_GridView1 tbody tr:not(.GridPager)', { timeout: 5000 }).catch(() => null);
+  }
+
+  currentPage++;
+
+  res.json({ page: pageIndex, data: pageData });
+});
+
+app.get('/api/getUserInfo', async (req, res) => {
+  await page.waitForSelector('#MainContent_Label1', { timeout: 5000 }).catch(() => null);
+
+  const userInfo = await page.evaluate(() => {
+    const getText = (selector) => {
+      const el = document.querySelector(selector);
+      return el ? el.textContent.trim() : "N/A";
+    };
+
+    return {
+      "Cuenta": getText('#MainContent_Label1'),
+      "Centro": getText('#MainContent_Label4'),
+      "Nombre": getText('#MainContent_Label2'),
+      "Carrera": getText('#MainContent_Label3'),
+      "Indice": {
+        "global": getText('#MainContent_Label6'),
+        "periodo": getText('#MainContent_Label5')
+      }
+    };
+  });
+
+  res.json(userInfo);
 });
 
 
