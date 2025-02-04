@@ -105,6 +105,8 @@ app.post('/api/refresh4', async function (req, res) {
   };
 
   for (let i = 1; i <= pages; i++) {
+    await page.waitForSelector('#MainContent_GridView1 tbody tr:not(.GridPager)', { timeout: 5000 }).catch(() => null);
+
     const pageData = await page.evaluate(() => {
       const rows = document.querySelectorAll('#MainContent_GridView1 tbody tr:not(.GridPager)');
       let data = [];
@@ -112,16 +114,19 @@ app.post('/api/refresh4', async function (req, res) {
       rows.forEach((row, index) => {
         if (index === 0) return; // Omitir encabezado
         const cols = row.querySelectorAll('td');
+        console.log(`row ${row}`);
+        
+
         if (cols.length > 0) {
           data.push({
-            CODIGO: cols[0].textContent.trim(),
-            ASIGNATURA: cols[1].textContent.trim(),
-            UV: cols[2].textContent.trim(),
-            SECCION: cols[3].textContent.trim(),
-            ANIO: cols[4].textContent.trim(),
-            PERIODO: cols[5].textContent.trim(),
-            CALIFICACION: cols[6].textContent.trim(),
-            OBS: cols[7].textContent.trim(),
+            CODIGO: cols[0]?.textContent?.trim() || "N/A",
+            ASIGNATURA: cols[1]?.textContent?.trim() || "N/A",
+            UV: cols[2]?.textContent?.trim() || "N/A",
+            SECCION: cols[3]?.textContent?.trim() || "N/A",
+            ANIO: cols[4]?.textContent?.trim() || "N/A",
+            PERIODO: cols[5]?.textContent?.trim() || "N/A",
+            CALIFICACION: cols[6]?.textContent?.trim() || "N/A",
+            OBS: cols[7]?.textContent?.trim() || "N/A",
           });
         }
       });
@@ -138,17 +143,20 @@ app.post('/api/refresh4', async function (req, res) {
         if (nextPageLink) nextPageLink.click();
       }, i + 1);
 
-      // Esperar a que la nueva página cargue completamente
+      // Esperar que cargue la nueva página
       await page.waitForNavigation({ waitUntil: 'domcontentloaded' }).catch(() => null);
       await page.waitForSelector('#MainContent_GridView1 tbody tr:not(.GridPager)', { timeout: 5000 }).catch(() => null);
     }
   }
 
-  // Obtener información del usuario
+  // Esperar los elementos antes de extraer información
   await page.waitForSelector('#MainContent_Label1', { timeout: 5000 }).catch(() => null);
 
   const userInfo = await page.evaluate(() => {
-    const getText = (selector) => document.querySelector(selector)?.textContent.trim() || "N/A";
+    const getText = (selector) => {
+      const el = document.querySelector(selector);
+      return el ? el.textContent.trim() : "N/A";
+    };
 
     return {
       "Cuenta": getText('#MainContent_Label1'),
@@ -169,6 +177,7 @@ app.post('/api/refresh4', async function (req, res) {
 
   res.json(classRes);
 });
+
 
 app.use('/api/db', db);
 
