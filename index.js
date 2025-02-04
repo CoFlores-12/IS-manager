@@ -99,71 +99,75 @@ app.post('/api/refresh3', async function (req, res) {
 });
 
 app.post('/api/refresh4', async function (req, res) {
- 
-    //JSON response
-    const classRes = {
-      "classes": [],
-      "INFO": {}
-    };
-  
-    for (let i = 1; i <= pages; i++) {
-  
-      const pageData = await page.evaluate(() => {
-        const rows = document.querySelectorAll('#MainContent_GridView1 tbody tr:not(.GridPager)');
-        let data = [];
-  
-        rows.forEach(row => {
-          const cols = row.querySelectorAll('td');
-          if (cols.length > 0) {
-            data.push({
-              CODIGO: cols[0].textContent.trim(),
-              ASIGNATURA: cols[1].textContent.trim(),
-              UV: cols[2].textContent.trim(),
-              SECCION: cols[3].textContent.trim(),
-              ANIO: cols[4].textContent.trim(),
-              PERIODO: cols[5].textContent.trim(),
-              CALIFICACION: cols[6].textContent.trim(),
-              OBS: cols[7].textContent.trim(),
-            });
-          }
-        });
-  
-        return data;
-      });
-  
-      classRes.classes = classRes.classes.concat(pageData);
-  
-      // Ir a la siguiente página si no es la última
-      if (i < pages) {
-        await page.evaluate((pageNum) => {
-          const nextPageLink = document.querySelector(`#MainContent_GridView1 tbody tr.GridPager td table tbody tr td a:nth-child(${pageNum})`);
-          if (nextPageLink) nextPageLink.click();
-        }, i + 1);
-  
-        await page.waitForTimeout(1000); // Esperar a que cargue la nueva página
-      }
-    }
-  
-  
-    //get averanges
-    const userInfo = await page.evaluate(() => {
-      return {
-        "Cuenta": document.querySelector('#MainContent_Label1')?.textContent.trim() || "N/A",
-        "Centro": document.querySelector('#MainContent_Label4')?.textContent.trim() || "N/A",
-        "Nombre": document.querySelector('#MainContent_Label2')?.textContent.trim() || "N/A",
-        "Carrera": document.querySelector('#MainContent_Label3')?.textContent.trim() || "N/A",
-        "Indice": {
-          "global": document.querySelector('#MainContent_Label6')?.textContent.trim() || "N/A",
-          "periodo": document.querySelector('#MainContent_Label5')?.textContent.trim() || "N/A"
+  const classRes = {
+    "classes": [],
+    "INFO": {}
+  };
+
+  for (let i = 1; i <= pages; i++) {
+    const pageData = await page.evaluate(() => {
+      const rows = document.querySelectorAll('#MainContent_GridView1 tbody tr:not(.GridPager)');
+      let data = [];
+
+      rows.forEach((row, index) => {
+        if (index === 0) return; // Omitir encabezado
+        const cols = row.querySelectorAll('td');
+        if (cols.length > 0) {
+          data.push({
+            CODIGO: cols[0].textContent.trim(),
+            ASIGNATURA: cols[1].textContent.trim(),
+            UV: cols[2].textContent.trim(),
+            SECCION: cols[3].textContent.trim(),
+            ANIO: cols[4].textContent.trim(),
+            PERIODO: cols[5].textContent.trim(),
+            CALIFICACION: cols[6].textContent.trim(),
+            OBS: cols[7].textContent.trim(),
+          });
         }
-      };
+      });
+
+      return data;
     });
-    classRes.INFO=userInfo;
-  
-    await page.close();
-    page = null;
-    
-    res.send(classRes);
+
+    classRes.classes = classRes.classes.concat(pageData);
+
+    // Ir a la siguiente página si no es la última
+    if (i < pages) {
+      await page.evaluate((pageNum) => {
+        const nextPageLink = document.querySelector(`#MainContent_GridView1 tbody tr.GridPager td table tbody tr td a:nth-child(${pageNum})`);
+        if (nextPageLink) nextPageLink.click();
+      }, i + 1);
+
+      // Esperar a que la nueva página cargue completamente
+      await page.waitForNavigation({ waitUntil: 'domcontentloaded' }).catch(() => null);
+      await page.waitForSelector('#MainContent_GridView1 tbody tr:not(.GridPager)', { timeout: 5000 }).catch(() => null);
+    }
+  }
+
+  // Obtener información del usuario
+  await page.waitForSelector('#MainContent_Label1', { timeout: 5000 }).catch(() => null);
+
+  const userInfo = await page.evaluate(() => {
+    const getText = (selector) => document.querySelector(selector)?.textContent.trim() || "N/A";
+
+    return {
+      "Cuenta": getText('#MainContent_Label1'),
+      "Centro": getText('#MainContent_Label4'),
+      "Nombre": getText('#MainContent_Label2'),
+      "Carrera": getText('#MainContent_Label3'),
+      "Indice": {
+        "global": getText('#MainContent_Label6'),
+        "periodo": getText('#MainContent_Label5')
+      }
+    };
+  });
+
+  classRes.INFO = userInfo;
+
+  await page.close();
+  page = null;
+
+  res.json(classRes);
 });
 
 app.use('/api/db', db);
