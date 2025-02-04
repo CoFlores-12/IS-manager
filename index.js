@@ -96,7 +96,7 @@ app.post('/api/refresh3', async function (req, res) {
   });
   currentPage = 0;
   
-  res.send("ready");
+  res.json({pages});
     
 });
 
@@ -180,9 +180,23 @@ app.post('/api/refresh4', async function (req, res) {
   res.json(classRes);
 });
 
-app.get('/api/getPageData', async (req, res) => {
+app.get('/api/getAllPages', async (req, res) => {
+  let allData = [];
+  
+  for (let i = 1; i <= pages; i++) {
+    const response = await fetch(`https://tu-api.vercel.app/api/getPageData?pageNum=${i}`);
+    const data = await response.json();
+    allData = allData.concat(data.data);
+  }
 
-  const pageIndex = currentPage;
+  res.json({ classes: allData });
+});
+
+app.get('/api/getPageData', async (req, res) => {
+  const { pageNum } = req.query;
+  if (!pageNum) return res.status(400).json({ error: "Se requiere el número de página" });
+
+  const pageIndex = parseInt(pageNum);
 
   await page.waitForSelector('#MainContent_GridView1 tbody tr:not(.GridPager)', { timeout: 5000 }).catch(() => null);
 
@@ -208,49 +222,10 @@ app.get('/api/getPageData', async (req, res) => {
       }
     });
 
-    
-
     return data;
   });
 
-  if (currentPage < pages) {
-    await page.evaluate((pageNum) => {
-      const nextPageLink = document.querySelector(`#MainContent_GridView1 tbody tr.GridPager td table tbody tr td a:nth-child(${pageNum})`);
-      if (nextPageLink) nextPageLink.click();
-    }, currentPage + 1);
-
-    // Esperar que cargue la nueva página
-    await page.waitForNavigation({ waitUntil: 'domcontentloaded' }).catch(() => null);
-    await page.waitForSelector('#MainContent_GridView1 tbody tr:not(.GridPager)', { timeout: 5000 }).catch(() => null);
-  }
-
-  currentPage++;
-
   res.json({ page: pageIndex, data: pageData });
-});
-
-app.get('/api/getUserInfo', async (req, res) => {
-  await page.waitForSelector('#MainContent_Label1', { timeout: 5000 }).catch(() => null);
-
-  const userInfo = await page.evaluate(() => {
-    const getText = (selector) => {
-      const el = document.querySelector(selector);
-      return el ? el.textContent.trim() : "N/A";
-    };
-
-    return {
-      "Cuenta": getText('#MainContent_Label1'),
-      "Centro": getText('#MainContent_Label4'),
-      "Nombre": getText('#MainContent_Label2'),
-      "Carrera": getText('#MainContent_Label3'),
-      "Indice": {
-        "global": getText('#MainContent_Label6'),
-        "periodo": getText('#MainContent_Label5')
-      }
-    };
-  });
-
-  res.json(userInfo);
 });
 
 
