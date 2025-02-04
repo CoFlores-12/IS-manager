@@ -251,7 +251,7 @@ app.get('/api/getPageData', async (req, res) => {
   });
   if (pageNum < pages) {
     await page.evaluate((pageNum) => {
-      const nextPageLink = document.querySelector(`#MainContent_GridView1 tbody tr.GridPager td table tbody tr td a:nth-child(${pageNum})`);
+      const nextPageLink = document.querySelector(`#MainContent_GridView1 tbody tr.GridPager td table tbody tr td:nth-child(${pageNum}) a`);
       if (nextPageLink) nextPageLink.click();
     }, pageNum + 1);
 
