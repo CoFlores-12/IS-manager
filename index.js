@@ -52,7 +52,7 @@ app.post('/api/refresh1', async function (req, res) {
   }
   //go to login page
   page = await browser.newPage();
-  await page.goto('https://registro.unah.edu.hn/pregra_estu_login.aspx');
+  await page.goto('https://serviciosestudiantiles.unah.edu.hn/Estudiantes/LoginEstudiantes.aspx');
   
   res.send('{"status":"ready"}');
     
@@ -72,7 +72,7 @@ app.post('/api/refresh2', async function (req, res) {
 
   //go to history
   try {
-    await page.waitForSelector('#MainContent_LinkButton2');
+    await page.waitForSelector('#MainContent_LinkButton13');
   } catch (error) {
     res.status(500).send("Invalid Credentials");
     return;
@@ -84,15 +84,14 @@ app.post('/api/refresh2', async function (req, res) {
 
 app.post('/api/refresh3', async function (req, res) {
  
-  await page.click('#MainContent_LinkButton2');
+  await page.click('#MainContent_LinkButton13');
   
-  await page.waitForSelector('#MainContent_ASPxPageControl1_ASPxGridView2_DXMainTable');
+  await page.waitForSelector('#MainContent_GridView1');
 
   //get number of pages in history
   pages = await page.evaluate(() => {
-    const data = document.getElementsByClassName('dxpSummary_Aqua');
-    const myArray = data[0].innerHTML.split(" ");
-    return myArray[3];
+    const pagerLinks = document.querySelectorAll('#MainContent_GridView1 tbody tr.GridPager td table tbody tr td a');
+    return pagerLinks.length + 1;
   });
   
   res.send("ready");
@@ -107,51 +106,59 @@ app.post('/api/refresh4', async function (req, res) {
       "INFO": {}
     };
   
-    for (let i = 0; i < pages; i++) {
-      responseClass = await page.evaluate(() => { 
-        const  clases = [];
-        //get all elements of class table
-        const elements = document.querySelectorAll('#MainContent_ASPxPageControl1_ASPxGridView2_DXMainTable tbody tr');
+    for (let i = 1; i <= totalPages; i++) {
   
-        for (let index = 9; index<elements.length; index++){
-          clases.push({
-              'CODIGO': elements[index].getElementsByTagName('td')[0].innerHTML,
-              'ASIGNATURA': elements[index].getElementsByTagName('td')[1].innerHTML,
-              'UV': elements[index].getElementsByTagName('td')[2].innerHTML,
-              'SECCION': elements[index].getElementsByTagName('td')[3].innerHTML,
-              'ANIO': elements[index].getElementsByTagName('td')[4].innerHTML,
-              'PERIODO': elements[index].getElementsByTagName('td')[5].innerHTML,
-              'CALIFICACION': elements[index].getElementsByTagName('td')[6].innerHTML,
-              'OBS': elements[index].getElementsByTagName('td')[7].innerHTML
+      const pageData = await page.evaluate(() => {
+        const rows = document.querySelectorAll('#MainContent_GridView1 tbody tr:not(.GridPager)');
+        let data = [];
+  
+        rows.forEach(row => {
+          const cols = row.querySelectorAll('td');
+          if (cols.length > 0) {
+            data.push({
+              CODIGO: cols[0].textContent.trim(),
+              ASIGNATURA: cols[1].textContent.trim(),
+              UV: cols[2].textContent.trim(),
+              SECCION: cols[3].textContent.trim(),
+              ANIO: cols[4].textContent.trim(),
+              PERIODO: cols[5].textContent.trim(),
+              CALIFICACION: cols[6].textContent.trim(),
+              OBS: cols[7].textContent.trim(),
             });
-        }
-        return clases;
-      });
-      responseClass.forEach(clas => {
-        classRes.classes.push(clas);
-      });
-    //next page in history
-    await page.evaluate(() => {
-      aspxGVPagerOnClick("MainContent_ASPxPageControl1_ASPxGridView2","PBN");
-    });
+          }
+        });
   
-    await page.waitForTimeout(600);
-  }
+        return data;
+      });
+  
+      classRes.classes = classRes.classes.concat(pageData);
+  
+      // Ir a la siguiente página si no es la última
+      if (i < totalPages) {
+        await page.evaluate((pageNum) => {
+          const nextPageLink = document.querySelector(`#MainContent_GridView1 tbody tr.GridPager td table tbody tr td a:nth-child(${pageNum})`);
+          if (nextPageLink) nextPageLink.click();
+        }, i + 1);
+  
+        await page.waitForTimeout(1000); // Esperar a que cargue la nueva página
+      }
+    }
   
   
     //get averanges
-    const promedio = await page.evaluate(() => {
-      const obj = {
-          "Indice": {
-              'global': document.getElementById('MainContent_ASPxRoundPanel2_ASPxLabel11').innerHTML,
-              'periodo': document.getElementById('MainContent_ASPxRoundPanel2_ASPxLabel12').innerHTML
-          },
-          "Nombre": document.getElementById('MainContent_ASPxRoundPanel2_ASPxLabel8').innerHTML,
-          "Carrera": document.getElementById('MainContent_ASPxRoundPanel2_ASPxLabel9').innerHTML
+    const userInfo = await page.evaluate(() => {
+      return {
+        "Cuenta": document.querySelector('#MainContent_Label1')?.textContent.trim() || "N/A",
+        "Centro": document.querySelector('#MainContent_Label4')?.textContent.trim() || "N/A",
+        "Nombre": document.querySelector('#MainContent_Label2')?.textContent.trim() || "N/A",
+        "Carrera": document.querySelector('#MainContent_Label3')?.textContent.trim() || "N/A",
+        "Indice": {
+          "global": document.querySelector('#MainContent_Label6')?.textContent.trim() || "N/A",
+          "periodo": document.querySelector('#MainContent_Label5')?.textContent.trim() || "N/A"
+        }
       };
-      return obj;
     });
-    classRes.INFO=promedio;
+    classRes.INFO=userInfo;
   
     await page.close();
     page = null;
